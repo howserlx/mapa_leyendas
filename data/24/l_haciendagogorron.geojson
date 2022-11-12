@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_haciendagogorron_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "La Hacienda de Gogorrón" }, "geometry": { "type": "LineString", "coordinates": [ [ -100.909753283038498, 21.839016135483405 ], [ -100.910805364883728, 21.838832022631863 ], [ -100.910769683304949, 21.838563158994141 ], [ -100.909115737182205, 21.838872936619367 ], [ -100.90917345738319, 21.839125239283579 ], [ -100.909748035747484, 21.839017353160227 ] ] } }
+]
+}

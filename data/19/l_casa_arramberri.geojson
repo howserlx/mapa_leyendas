@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_casa_arramberri",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "19_l_casa_arramberri", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": 1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "LineString", "coordinates": [ [ -100.30575, 25.67522 ], [ -100.30498, 25.67513 ], [ -100.30518, 25.67458 ], [ -100.30581, 25.67463 ], [ -100.30578, 25.67489 ], [ -100.30576, 25.67513 ] ] } }
+]
+}

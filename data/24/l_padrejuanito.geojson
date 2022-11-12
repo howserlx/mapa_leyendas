@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_padrejuanito_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "El padre Juanito" }, "geometry": { "type": "LineString", "coordinates": [ [ -99.991522794155799, 21.932508374118999 ], [ -99.993253140835492, 21.932831324202496 ], [ -99.993679232210084, 21.930334467171253 ], [ -99.990197753905576, 21.929871724376692 ], [ -99.989875587256535, 21.932310747586982 ], [ -99.991455243084232, 21.932503553962942 ] ] } }
+]
+}

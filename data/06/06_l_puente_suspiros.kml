@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>06_l_puente_suspiros</name>
+    <Style id="line-000000-1200-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-000000-1200-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-000000-1200-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-000000-1200-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-000000-1200-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>l_puente_suspiros</name>
+      <styleUrl>#line-000000-1200-nodesc</styleUrl>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -103.7597686,19.3195081,0
+          -103.7598545,19.3192348,0
+          -103.7598116,19.3189817,0
+          -103.7597472,19.3185969,0
+          -103.7596614,19.3181919,0
+          -103.7595004,19.3176249,0
+          -103.7593395,19.3172048,0
+          -103.7592966,19.3171288,0
+          -103.7592483,19.3170985,0
+          -103.7591839,19.317139,0
+          -103.7591571,19.3172503,0
+          -103.7593878,19.3178932,0
+          -103.7595594,19.318602,0
+          -103.7596238,19.3189968,0
+          -103.759656,19.3192398,0
+          -103.7596131,19.3194575,0
+          -103.7596131,19.3195385,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

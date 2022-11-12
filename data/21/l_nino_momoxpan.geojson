@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_nino_momoxpan",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "l_nino_momoxpan", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": 1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "LineString", "coordinates": [ [ -98.2746872, 19.070058, 0.0 ], [ -98.2736304, 19.0695054, 0.0 ], [ -98.2747945, 19.0692164, 0.0 ], [ -98.2747033, 19.0699566, 0.0 ] ] } }
+]
+}

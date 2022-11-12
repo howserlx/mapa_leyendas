@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_presasanjose_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "Los niños emparedados de la Presa de San José" }, "geometry": { "type": "LineString", "coordinates": [ [ -101.054780200099756, 22.1503947271535 ], [ -101.054957648774504, 22.150820928739989 ], [ -101.057781789547136, 22.149536748803886 ], [ -101.056975751499152, 22.147731634420605 ], [ -101.054341089819928, 22.149586890539638 ], [ -101.054778696297461, 22.150392289722419 ] ] } }
+]
+}

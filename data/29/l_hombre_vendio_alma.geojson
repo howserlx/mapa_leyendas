@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_hombre_vendio_alma",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "29_l_hombre_vendio_alma", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": 1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "LineString", "coordinates": [ [ -97.92424, 19.31704 ], [ -97.92492, 19.31696 ], [ -97.92496, 19.31698 ], [ -97.92498, 19.317 ], [ -97.92499, 19.31702 ], [ -97.925, 19.31704 ], [ -97.92501, 19.31711 ], [ -97.92501, 19.31714 ], [ -97.92502, 19.31717 ], [ -97.92502, 19.31726 ], [ -97.92501, 19.31728 ], [ -97.92499, 19.3173 ], [ -97.92497, 19.31731 ], [ -97.92428, 19.31741 ] ] } }
+]
+}

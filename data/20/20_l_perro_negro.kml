@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>20_l_perro_negro</name>
+    <Style id="line-000000-1200-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-000000-1200-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-000000-1200-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-000000-1200-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-000000-1200-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>l_perro_negro</name>
+      <styleUrl>#line-000000-1200-nodesc</styleUrl>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -96.7403824,17.0302486,0
+          -96.7402429,17.0303153,0
+          -96.7376197,17.0293767,0
+          -96.7375661,17.02931,0
+          -96.7376358,17.0287766,0
+          -96.7377109,17.0286996,0
+          -96.7396582,17.0294228,0
+          -96.7396796,17.0296126,0
+          -96.7398406,17.0298024,0
+          -96.7402214,17.0300743,0
+          -96.7403126,17.0300948,0
+          -96.7403556,17.0301512,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

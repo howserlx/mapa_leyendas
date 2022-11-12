@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_monja_catedral",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "10_monja_catedral", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": 1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "LineString", "coordinates": [ [ -104.67069, 24.02504 ], [ -104.67063, 24.02454 ], [ -104.66992, 24.02471 ], [ -104.66996, 24.02506 ], [ -104.66999, 24.02526 ], [ -104.67003, 24.02571 ], [ -104.67075, 24.0256 ], [ -104.67069, 24.02508 ] ] } }
+]
+}

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_juendeljarro_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "JUan del Jarro" }, "geometry": { "type": "LineString", "coordinates": [ [ -100.977112414386426, 22.149302578637585 ], [ -100.977218937230063, 22.149877704395379 ], [ -100.97745016974433, 22.149829576806994 ], [ -100.977315067601154, 22.148960871007525 ], [ -100.977042265196701, 22.149001779711178 ], [ -100.977094227559434, 22.149259263631805 ] ] } }
+]
+}

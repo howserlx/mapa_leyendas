@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>27_l_nina_chiltepec</name>
+    <Style id="icon-1899-DB4436-nodesc-normal">
+      <IconStyle>
+        <color>ff3644db</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1899-DB4436-nodesc-highlight">
+      <IconStyle>
+        <color>ff3644db</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1899-DB4436-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1899-DB4436-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1899-DB4436-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="line-1267FF-5000-nodesc-normal">
+      <LineStyle>
+        <color>ffff6712</color>
+        <width>5</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-1267FF-5000-nodesc-highlight">
+      <LineStyle>
+        <color>ffff6712</color>
+        <width>7.5</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-1267FF-5000-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-1267FF-5000-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-1267FF-5000-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>27_l_nina_chiltepec</name>
+      <styleUrl>#line-1267FF-5000-nodesc</styleUrl>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -93.08024,18.42973,0
+          -93.08108,18.43016,0
+          -93.08119,18.43024,0
+          -93.08177,18.43078,0
+          -93.0825,18.43147,0
+          -93.08277,18.43173,0
+          -93.08308,18.432,0
+          -93.08328,18.43215,0
+          -93.08401,18.43257,0
+          -93.08411,18.43262,0
+          -93.0842,18.43264,0
+          -93.08424,18.43263,0
+          -93.08431,18.43259,0
+          -93.08446,18.43247,0
+          -93.08469,18.43226,0
+          -93.08478,18.43217,0
+          -93.08547,18.43155,0
+          -93.0862,18.43085,0
+          -93.08547,18.43014,0
+          -93.08473,18.42944,0
+          -93.08471,18.42944,0
+          -93.0847,18.42943,0
+          -93.08468,18.42943,0
+          -93.08465,18.42946,0
+          -93.08396,18.4301,0
+          -93.08327,18.42942,0
+          -93.08253,18.43011,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>Cuauhtémoc, Tabasco, México</name>
+      <styleUrl>#icon-1899-DB4436-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          -93.0802398,18.4297334,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Madero 2160, Chiltepec, Tab., México</name>
+      <styleUrl>#icon-1899-DB4436-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          -93.0825333,18.4301128,0
+        </coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>

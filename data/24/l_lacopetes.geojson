@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_lacopetes_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "La Copetes" }, "geometry": { "type": "LineString", "coordinates": [ [ -100.976303100586506, 22.151303476735702 ], [ -100.976688921129963, 22.151231286078279 ], [ -100.976549921809593, 22.15066940086221 ], [ -100.975812056258476, 22.150810173171909 ], [ -100.975962747110458, 22.151382886416116 ], [ -100.976279717523255, 22.151307086267607 ] ] } }
+]
+}

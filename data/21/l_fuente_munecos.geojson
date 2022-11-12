@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_fuente_munecos",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "21_l_fuente_munecos", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": 1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "LineString", "coordinates": [ [ -98.18329, 19.04736 ], [ -98.18285, 19.04727 ], [ -98.18274, 19.0473 ], [ -98.18285, 19.04734 ], [ -98.18326, 19.04743 ], [ -98.18329, 19.04736 ] ] } }
+]
+}

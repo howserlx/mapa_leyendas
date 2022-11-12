@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_donalucas_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "Doña Lucas" }, "geometry": { "type": "LineString", "coordinates": [ [ -100.573105458087539, 21.667524635395495 ], [ -100.573285964897892, 21.66693945086174 ], [ -100.57247158533491, 21.666767796281448 ], [ -100.57232046335416, 21.667321771692684 ], [ -100.573076073257951, 21.667512931728083 ] ] } }
+]
+}

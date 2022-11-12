@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>03_l_mechudo</name>
+    <Style id="line-000000-1200-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-000000-1200-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-000000-1200-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-000000-1200-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-000000-1200-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>l_mechudo</name>
+      <styleUrl>#line-000000-1200-nodesc</styleUrl>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -110.5753902,24.8211645,0
+          -110.5719355,24.8236379,0
+          -110.5716887,24.8237548,0
+          -110.5714527,24.8237548,0
+          -110.5680194,24.8230731,0
+          -110.56788,24.8229952,0
+          -110.5676654,24.8227907,0
+          -110.5658415,24.8211451,0
+          -110.5657235,24.8209698,0
+          -110.5656698,24.820814,0
+          -110.5653372,24.8179705,0
+          -110.5653587,24.817805,0
+          -110.5654231,24.8176005,0
+          -110.5655625,24.8175226,0
+          -110.5658415,24.8175128,0
+          -110.566099,24.8175907,0
+          -110.57524,24.8210672,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

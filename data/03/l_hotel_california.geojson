@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_hotel_california",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "03_l_hotel_california", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": 1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "LineString", "coordinates": [ [ -110.2259, 23.44879 ], [ -110.22573, 23.44867 ], [ -110.22502, 23.44952 ], [ -110.2254, 23.44984 ], [ -110.22564, 23.45005 ], [ -110.22602, 23.45032 ], [ -110.22609, 23.4501 ], [ -110.22619, 23.44985 ], [ -110.2263, 23.44964 ], [ -110.2264, 23.44944 ], [ -110.22642, 23.44938 ], [ -110.22643, 23.44931 ], [ -110.22643, 23.44925 ], [ -110.22642, 23.44919 ], [ -110.22639, 23.44915 ], [ -110.22634, 23.44909 ] ] } }
+]
+}

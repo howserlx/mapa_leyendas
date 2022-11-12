@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>05_l_garrotero_puente_negro</name>
+    <Style id="line-000000-1200-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-000000-1200-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-000000-1200-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-000000-1200-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-000000-1200-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>l_garrotero_puente_negro</name>
+      <styleUrl>#line-000000-1200-nodesc</styleUrl>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -103.4685397,25.5455808,0
+          -103.4710824,25.5477152,0
+          -103.4716296,25.5482089,0
+          -103.4717583,25.5482524,0
+          -103.4718066,25.5482331,0
+          -103.4718763,25.548175,0
+          -103.4716457,25.547933,0
+          -103.4713345,25.5476765,0
+          -103.4706586,25.5468827,0
+          -103.4701919,25.5463455,0
+          -103.4696501,25.5457018,0
+          -103.4691834,25.5450919,0
+          -103.4688508,25.5446176,0
+          -103.4687542,25.5443417,0
+          -103.4684324,25.5446805,0
+          -103.4679549,25.5450726,0
+          -103.4684753,25.5455324,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

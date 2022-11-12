@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>26_l_casino_diablo</name>
+    <Style id="line-000000-1200-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-000000-1200-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-000000-1200-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-000000-1200-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-000000-1200-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>Línea 1</name>
+      <styleUrl>#line-000000-1200-nodesc</styleUrl>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -110.9342219,29.0934132,0
+          -110.9341253,29.0933968,0
+          -110.934018,29.0933452,0
+          -110.9338946,29.0933148,0
+          -110.9337874,29.0932866,0
+          -110.9336747,29.0932866,0
+          -110.9335701,29.0932609,0
+          -110.9334601,29.0932585,0
+          -110.9333662,29.0932562,0
+          -110.9333582,29.0931695,0
+          -110.9333582,29.0930945,0
+          -110.9333528,29.0930195,0
+          -110.9334092,29.092928,0
+          -110.9334843,29.0928812,0
+          -110.9335513,29.0928507,0
+          -110.9336264,29.0928226,0
+          -110.9336827,29.0928343,0
+          -110.9337632,29.0928788,0
+          -110.9337739,29.0929515,0
+          -110.9337283,29.0930054,0
+          -110.9336506,29.0930452,0
+          -110.9335942,29.0930687,0
+          -110.9335406,29.0931413,0
+          -110.933495,29.0931882,0
+          -110.9335272,29.0932187,0
+          -110.9335808,29.093221,0
+          -110.933672,29.0932327,0
+          -110.9337498,29.0932468,0
+          -110.9338598,29.0932468,0
+          -110.9339751,29.093289,0
+          -110.9340448,29.0933101,0
+          -110.934128,29.0933429,0
+          -110.9341897,29.0933499,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

@@ -1,0 +1,510 @@
+/*************************************************
+ uxsmap.css
+ v 1.2.0
+
+**************************************************/
+
+/***************************************
+  PROJECT CUSTOM
+****************************************/
+.red{color:#ea4026;}
+.blue{color:#3ca0f6;}
+.green{color:#56bf3e;}
+.purple{color:#673ab7;}
+
+.map-primary-color{color:#673AB7;} /*8,48,75*/
+.bg-map-primary-color{background-color:#673AB7;} /*8,48,75*/
+.tab-primary-color.active>a:after {
+    background-color:#673AB7 !important;
+}
+
+.number{font-weight: 600; font-size: 1.1em;}
+.info-logo-modal{height: 50px;width: auto;}
+.info-logo-modal-center{
+    float: left;
+    position: fixed;
+    width: 70px;
+    height: auto;
+    right: 40px;
+}
+
+.uxsmap-logo-modal{height: 40px;}
+
+.disclaimer-img{
+  text-align: center;
+}
+
+.disclaimer-img img{
+  width: 120px;
+  height: auto;
+}
+
+
+/***************************************
+  UXSMAP
+****************************************/
+#uxmap_controls{
+  margin-top:24px !important;
+  margin-left: 24px;
+}
+
+#uxmap_uxmap_footer_controls{
+  z-index: 999;
+}
+
+/*Controls*/
+.fab-icon-open, .fab-icon-close{
+  height: 42px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -20px;
+  margin-left: -20px;
+}
+
+.main-body{
+  background: black;
+}
+
+#modal_map_info .modal-body{
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
+/***************************************
+  COLLAPSIBLE FOOTER DIALOG
+****************************************/
+#collapsible_footer_dialog {
+  width: 380px;
+  max-height: 600px;
+  max-width: 540px !important;
+  /*background-color: #EFF0F0;*/
+  background-color: #020607 !important;
+  color:#ccc !important;
+}
+#collapsible_footer_dialog .panel-heading {
+  background-color: #020607 !important;
+}
+#collapsible_footer_dialog .panel-body {
+  background-color: #020607 !important;
+}
+
+#collapsible_footer_dialog .title-template-image{
+  height: 40px;
+}
+
+#collapsible_footer_dialog .title-template-title{
+
+}
+
+
+/***************************************
+  day
+****************************************/
+#day{
+  position: absolute;
+  z-index: 999;
+}
+
+#day #activate_map{
+  position: fixed;
+  z-index: 999;
+  left:20px;
+  top:20px;
+  width: 120px;
+  transition: all 1.1s ease;
+  animation: dance 1.1s infinite alternate ease-in-out;
+}
+
+#day #activate_map_ghost{
+  position: fixed;
+  z-index: 999;
+  left:170px;
+  top:110px;
+  width: 60px;
+  transition: all 0.5s ease;
+  /*animation: dance .8s infinite alternate ease-in-out;*/
+}
+#day #activate_map_ghost:hover{
+  transform:scale(2.0)
+}
+
+#day #activate_map_text{
+  position: fixed !important;
+  left:0px;
+  top:100px;
+}
+
+#day .back_init_btn{
+  position: fixed;
+  z-index: 999;
+  left:40px;
+  top:320px;
+  width: 90px;
+  transition: all 0.5s ease;
+}
+
+#day .back_init_btn:hover{
+  transform:scale(1.2)
+}
+
+@keyframes dance {
+  from, 49% { transform-origin: -50% 100%; }
+  50%, 75%, to { transform-origin: 150% 100%; }
+  25% { transform: rotate(-10deg);}
+  50% { transform: rotate(0deg);}
+  75% { transform: rotate(10deg);}
+}
+
+#day #activate_map:hover{
+
+}
+
+/***************************************
+  night
+****************************************/
+#night{
+  position: absolute;
+  z-index: 999;
+}
+
+#night .night-header{
+  position: fixed;
+  top: -24px;
+  width: 100%;
+  height: 80px;
+  background: url("../img/dia_muertos_header.png") repeat-x;
+  background-size: 180px;
+}
+
+#night .night-footer{
+  position: fixed;
+  bottom: -30px;
+  width: 100%;
+  height: 80px;
+  margin-left: 70px;
+  background: url("../img/dia_muertos_footer.png") repeat-x;
+  background-size: 200px;
+}
+
+
+/***************************************
+  speech-bubble
+****************************************/
+.speech-bubble {
+  margin: 3em;
+  width: 360px;
+  padding: 10px;
+  background-color:rgb(103, 58, 183,0.95);
+  color: #666;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border: 10px solid rgba(0,0,0,0.095);
+}
+
+.speech-bubble:before{
+  content: "";
+  border: solid 20px transparent; /* set all borders to 10 pixels width */
+  border-top: 0; /* we do not need the top border in this case */
+  border-bottom-color:rgb(103, 58, 183,0.95);
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  display: block;
+  position: relative;
+  top: -30px; /* border-width of the :after element + padding of the root element */
+  margin-left: 5px;
+}
+
+.speech-bubble p {
+  margin-top: -15px;
+  font-size: 1.2em;
+  color: white;
+  font-weight: 600;
+}
+.speech-bubble p small {
+  font-size: 0.85em;
+
+}
+
+
+/***************************************
+  leyenda in map
+****************************************/
+.legend_name_label{
+  color: #ccc;
+  background-color: #020607;
+  font-family: 'Alegreya SC', serif;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  width: auto;
+  border: 2px solid #ccc;
+  white-space: nowrap;
+}
+
+
+/***************************************
+  leyenda modal
+****************************************/
+.leyenda_modal_background{
+  /*background: #041826;*/
+  background: #020607;
+  color:#ccc;
+  font-size: 1.2em;
+
+  -webkit-box-shadow: 0px 0px 48px 8px rgba(0,0,0,0.62);
+  -moz-box-shadow: 0px 0px 48px 8px rgba(0,0,0,0.62);
+  box-shadow: 0px 0px 48px 8px rgba(0,0,0,0.62);
+}
+
+.leyenda_modal_banner{
+  width: 100%;
+}
+
+/*Leyenda Title*/
+#modal_map_leyenda_title{
+  position: fixed;
+  float: left;
+  text-align: center;
+  width: 100%;
+  top: 16px;
+  line-height: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  font-family: 'Alegreya SC', serif;
+  font-size: 50px;
+  color: #FFFFFF;
+  text-shadow: 0 0 8px #FFFFFF;
+}
+
+/*Leyenda Place*/
+#modal_map_leyenda_place{
+  position: fixed;
+  float: left;
+  text-align: center;
+  width: 100%;
+  top: 140px;
+
+  font-family: 'Alegreya SC', serif;
+  font-size: 22px;
+  color: #FFFFFF;
+  text-shadow: 0 0 4px #FFFFFF;
+}
+
+/*Video Youtube Responsive*/
+.video-responsive {
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    position: relative;
+    }
+.video-responsive iframe, .video-responsive object, .video-responsive embed {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+/*ghost before modal*/
+.center-window{
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    min-height: 100vh;
+    min-width: 100%;
+    z-index: 9999;
+}
+
+.ghost-centered{
+   height: 450px;
+}
+
+
+#modal_map_info .modal-body{
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
+
+.leyenda_modal_text_container {
+  scrollbar-width: 2px;
+  scrollbar-color:  #041826 transparent;
+  top:15px;
+  overflow-y: scroll;
+  max-height: 450px;
+
+}
+
+#modal_map_leyenda_text{
+  text-align: justify;
+}
+
+
+/***************************************
+  scroll
+****************************************/
+/* Works on Chrome/Edge/Safari */
+.leyenda_modal_text_container::-webkit-scrollbar {
+  width: 6px;
+}
+.leyenda_modal_text_container::-webkit-scrollbar-track {
+  background: #020607;
+}
+.leyenda_modal_text_container::-webkit-scrollbar-thumb {
+  background-color: #999999;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+
+
+/*******************************
+  MAP SIDEBAR
+********************************/
+.map-sidebar {
+
+}
+
+.map-sidebar .panel-heading{
+
+}
+
+.map-sidebar .panel-body{
+
+}
+
+.map-sidebar .closebtn {
+
+}
+
+.map-sidebar .filterbtn {
+
+}
+
+.map-sidebar .filtercount{
+}
+
+/***************************************
+  INFO-DIALOG
+****************************************/
+.data-image{
+  height: 50px;
+  margin:10px;
+}
+
+.data-title{
+  font-weight: 600;
+}
+
+
+
+/***************************************
+ Google Maps
+****************************************/
+.gm-style .gm-style-iw-a {
+}
+
+/***************************************
+ SIZES
+****************************************/
+/*Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 575.98px) {
+  #collapsible_footer_dialog {
+    width: 340px;
+  }
+
+  #night .footer{
+    position: fixed;
+    bottom: -20px;
+    width: 100%;
+    height: 80px;
+    margin-left: 0PX;
+    background: url("../img/dia_muertos_footer.png") repeat-x;
+    background-size: 200px;
+  }
+
+  #modal_map_leyenda .modal-body {
+      position: relative;
+      padding: 10px;
+  }
+
+}
+
+/*Small devices (landscape phones, less than 768px)*/
+@media (max-width: 767.98px) {
+  #collapsible_footer_dialog {
+    width: 360px;
+  }
+
+  #night .footer{
+    position: fixed;
+    bottom: -20px;
+    width: 100%;
+    height: 80px;
+    margin-left: 0PX;
+    background: url("../img/dia_muertos_footer.png") repeat-x;
+    background-size: 200px;
+  }
+
+  #modal_map_leyenda .modal-body {
+      position: relative;
+      padding: 10px;
+  }
+
+  /*Leyenda Title*/
+  #modal_map_leyenda_title{
+    
+    width: 100%;
+    top: 6px;
+    line-height: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    font-family: 'Alegreya SC', serif;
+    font-size: 30px;
+    color: #FFFFFF;
+    text-shadow: 0 0 8px #FFFFFF;
+  }
+
+  /*Leyenda Place*/
+  #modal_map_leyenda_place{
+    display: none;
+    }
+  }
+
+/*Medium devices (tablets, less than 992px)*/
+@media (max-width: 991.98px) {
+  #night .footer{
+    position: fixed;
+    bottom: -20px;
+    width: 100%;
+    height: 80px;
+    margin-left: 0PX;
+    background: url("../img/dia_muertos_footer.png") repeat-x;
+    background-size: 200px;
+  }
+
+  #modal_map_leyenda .modal-body {
+      position: relative;
+      padding: 10px;
+  }
+
+}
+
+/*Large devices (desktops, less than 1200px)*/
+@media (max-width: 1199.98px) {
+  #uxmap_controls{
+    margin-top:12px !important;
+    margin-left: 12px;
+  }
+
+}

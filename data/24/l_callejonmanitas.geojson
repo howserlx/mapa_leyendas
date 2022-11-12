@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_callejonmanitas_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "El callejón de las manitas" }, "geometry": { "type": "LineString", "coordinates": [ [ -100.970284438850499, 22.140661875588464 ], [ -100.970309348125951, 22.140723402242468 ], [ -100.971797677334479, 22.140165815958454 ], [ -100.97177276805904, 22.140108134492724 ], [ -100.970294817715271, 22.140652262046352 ] ] } }
+]
+}

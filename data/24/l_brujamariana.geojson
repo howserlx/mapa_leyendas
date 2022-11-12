@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_brujamariana_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "La bruja Mariana" }, "geometry": { "type": "LineString", "coordinates": [ [ -100.976671885237195, 22.144727494482627 ], [ -100.977409215768219, 22.144627889566678 ], [ -100.9774070457307, 22.144588806901012 ], [ -100.976508891306821, 22.144733971033094 ], [ -100.97651274915134, 22.144760547219434 ], [ -100.976668991853785, 22.144728834458586 ] ] } }
+]
+}

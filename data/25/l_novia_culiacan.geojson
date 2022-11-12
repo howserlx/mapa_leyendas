@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_novia_culiacan",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "25_l_novia_culiacan", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": 1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "LineString", "coordinates": [ [ -107.39358, 24.80874 ], [ -107.39347, 24.80812 ], [ -107.39437, 24.80803 ], [ -107.39447, 24.80802 ], [ -107.39463, 24.80893 ], [ -107.39467, 24.80918 ], [ -107.39473, 24.80954 ], [ -107.3948, 24.80989 ], [ -107.39384, 24.81004 ], [ -107.39375, 24.80955 ], [ -107.39374, 24.80952 ], [ -107.39373, 24.80947 ], [ -107.39372, 24.80944 ], [ -107.39364, 24.80906 ], [ -107.3936, 24.80884 ] ] } }
+]
+}

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "l_gallomaldonado_24",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "Número": 1, "Leyenda": "El Gallo Maldonado" }, "geometry": { "type": "LineString", "coordinates": [ [ -100.976739392828122, 22.151278056064367 ], [ -100.976906982993597, 22.152001673108764 ], [ -100.976110262642067, 22.15215642834854 ], [ -100.975951269724803, 22.151419655536259 ], [ -100.976723425876585, 22.151283630280922 ] ] } }
+]
+}

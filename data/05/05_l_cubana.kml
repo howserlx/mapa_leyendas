@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>05_l_cubana</name>
+    <Style id="line-000000-1200-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-000000-1200-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-000000-1200-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-000000-1200-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-000000-1200-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>l_cubana</name>
+      <styleUrl>#line-000000-1200-nodesc</styleUrl>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          -103.4756073,25.5389541,0
+          -103.4776994,25.5379473,0
+          -103.4777959,25.5379182,0
+          -103.4778979,25.5380489,0
+          -103.4788098,25.5396414,0
+          -103.4786328,25.5397237,0
+          -103.4776994,25.5401448,0
+          -103.4766372,25.5406336,0
+          -103.4764763,25.5406917,0
+          -103.4762778,25.5406578,0
+          -103.4756716,25.5405465,0
+          -103.4756073,25.5404545,0
+          -103.4752908,25.5398447,0
+          -103.4752747,25.5396607,0
+          -103.4753498,25.5394139,0
+          -103.4755214,25.5390364,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>
