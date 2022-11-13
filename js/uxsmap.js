@@ -41,7 +41,7 @@ function setMapStyle(map_style){
 
 /*change map backgroundColor once google maps is initializated */
 function setMapBackgroundColor($color){
-  var element = document.getElementById('map').children[0];
+  let element = document.getElementById('map').children[0];
   if(element){
     element.style.backgroundColor = $color;
   }
@@ -56,9 +56,9 @@ function moveTo(lat,lng){
     lat = (lat instanceof Number)? lat: parseFloat(''+lat);
     lng = (lng instanceof Number)? lng: parseFloat(''+lng);
 
-    var latLng = new google.maps.LatLng(lat, lng);
+    let latLng = new google.maps.LatLng(lat, lng);
 
-    var pos = {
+    let pos = {
       lat: lat,
       lng: lng
     };
@@ -73,9 +73,9 @@ function panTo(lat,lng){
     lat = (lat instanceof Number)? lat: parseFloat(''+lat);
     lng = (lng instanceof Number)? lng: parseFloat(''+lng);
 
-    var latLng = new google.maps.LatLng(lat, lng);
+    let latLng = new google.maps.LatLng(lat, lng);
 
-    var pos = {
+    let pos = {
       lat: lat,
       lng: lng
     };
@@ -182,11 +182,11 @@ function geoJSONLineToPointArray($geojson_path, $data, $reverse, $callback, $lin
       data.features.forEach(function(d){
         if(d.geometry){
           if($reverse){
-            for (var coordinate in d.geometry.coordinates.reverse()) {
+            for (let coordinate in d.geometry.coordinates.reverse()) {
               $data.push(d.geometry.coordinates[coordinate]);
             }
           }else{
-            for (var coordinate in d.geometry.coordinates) {
+            for (let coordinate in d.geometry.coordinates) {
               $data.push(d.geometry.coordinates[coordinate]);
             }
           }
@@ -203,6 +203,25 @@ function geoJSONLineToPointArray($geojson_path, $data, $reverse, $callback, $lin
   });
 }
 
+
+/*******************************
+ measeure
+********************************/
+var rad = function(x) {
+  return x * Math.PI / 180;
+};
+
+var getDistance_points = function(p1, p2) {
+  var R = 6378137; // Earth’s mean radius in meter
+  var dLat = rad(p2.lat() - p1.lat());
+  var dLong = rad(p2.lng() - p1.lng());
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(rad(p1.lat())) * Math.cos(rad(p2.lat())) *
+    Math.sin(dLong / 2) * Math.sin(dLong / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d; // returns the distance in meter
+};
 
 
 /*******************************
