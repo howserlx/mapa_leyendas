@@ -1,6 +1,6 @@
 /*************************************************
  uxsmap.css
- v 1.2.0
+ v 2.1.0
 
 **************************************************/
 
@@ -19,43 +19,66 @@
 
 .white-shadow{color: #222;font-weight: 600;text-shadow: 1px 0px 3px rgba(255, 255, 255, 1);}
 
-.float-left{float: left;}
-.float-right{float: right;}
+
+.img-responsive{
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.menu-img{
+  border-radius: 50%;
+}
+
+.no-padding{
+  padding: 0 !important;
+}
+
+.no-margin{
+  margin: 0 !important;
+}
 
 /***************************************
  template
 ****************************************/
-.navbar{
-  position: absolute;
-    z-index: 999;
-    top: 0;
-    width: 100%;
-}
-.navbar-brand {
-    padding: 8px 10px;
-    margin-left: 30px;
-}
-.navbar-brand>img{height: 40px;}
 
+/*IMPORTANT! Override template config for fade and collapsing*/
+.fade {
+  transition: opacity 0.15s linear; 
+}
+@media (prefers-reduced-motion: no-preference) {
+    .fade {
+      transition: opacity 0.15s linear; 
+    } 
+}
+.fade:not(.show) {
+  opacity: 0; 
+}
+
+.collapse:not(.show) {
+  display: none; 
+}
+
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.15s ease; 
+}
+@media (prefers-reduced-motion: no-preference) {
+    .collapsing {
+      transition: height 0.15s ease;
+    } 
+}
 
 /***************************************
   UXSMAP
 ****************************************/
-#uxsmap-layer-menu{
-  margin-top:80px !important;
-  margin-left: 24px;
-}
 
-.map-logo{height: 76px;padding: 8px;}
-.map-title{margin-top: 8px;}
-.map-title>h1, .map-title>h2, .map-title>h3, .map-title>h4,.map-title>h5{margin-top: 0px;margin-bottom: 0px;font-weight: 600;line-height: normal;}
-.map-title span{font-size: 0.9em; font-weight: 600;}
-.map-info-btn{padding: 4px 12px;}
 
-.header-transparency{background: rgba(255,255,255,0.6) !important;}
 
 /***************************************
-  Layer Control
+  Menu Options
 ****************************************/
 /*enabled layer*/
 .fab-menu-inner div[data-fab-label]:after {
@@ -70,6 +93,11 @@
     margin-top: -16px;
 }
 
+/*Menu btn main*/
+.fab-menu-btn{
+  width: 54px;
+  height: 54px;
+}
 .fab-icon-open, .fab-icon-close{
   height: 42px;
   position: absolute;
@@ -79,10 +107,19 @@
   margin-left: -20px;
 }
 
+/*Menu options*/
+.fab-menu-inner>li .btn-float {
+  padding: 0;
+  width: 48px;
+  height: 48px;
+}
+
+/*Menu options that represents a layer*/
 .uxmap_c_layer{
 	padding: 5px !important;
 }
 
+/*Exit street view button*/
 #uxmap_c_exit_street_view_container{
   position: absolute;
   left: 10px;
@@ -92,7 +129,32 @@
 
 
 /***************************************
-  MODAL
+  Lang Selector
+****************************************/
+.lang-selector{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  float: right;
+  z-index: 9999 !important;
+}
+
+.language-switch{
+  background-color: #eee !important;
+  border-radius: 5px;
+}
+
+.language-switch a>img {
+  position: relative;
+  max-height: 16px;
+  margin-top: 2px;
+  vertical-align: top;
+}
+
+
+
+/***************************************
+  Modal
 ****************************************/
 .modal{
     z-index: 9999;
@@ -103,19 +165,34 @@
     right: 15px;
     top: 15px;
     margin-top: 0;
-    z-index: 999;
-}
-
-.disclaimer-img{
-
-}
-.disclaimer-img img{
-
 }
 
 
 /***************************************
-  FILTER DIALOG
+  Modal Disclaimer
+****************************************/
+.disclaimer-img{
+  text-align: center;
+}
+
+.disclaimer-img img{
+  width: 120px;
+  height: auto;
+}
+.btn-disclaimer {
+  float: right!important;
+}
+
+/***************************************
+  Modal Info
+****************************************/
+.modal-info-small-logo{
+  height: 25px;
+}
+
+
+/***************************************
+  Filter Dialog
 ****************************************/
 #filter_dialog {
   width: 340px;
@@ -130,104 +207,94 @@
 
 }
 
-
 /***************************************
- date slider
+  Footer Dialog
 ****************************************/
-.noUi-connect {background: #70000B;}
-
-
-/***************************************
-  share buttons
-****************************************/
-.share_container{
-  margin-left: auto;
-  margin-right: auto;
-  width: 310px;
+#footer_dialog {
+  position: absolute;
+  bottom: 10px;
+  z-index: 9998;
+  width: auto;
+  max-width: 460px;
+  border-radius: 10px;
+  /* background-color: rgba(255, 255, 255,0.90); */
+  padding: 5px;
+  margin: 5px;
+  margin-left: 20px;
+  -webkit-box-shadow: 0px 0px 23px -6px #333;
+  -moz-box-shadow: 0px 0px 23px -6px #333;
+  box-shadow: 0px 0px 23px -6px #333;
 }
 
-/***************************************
-  info dialog
-****************************************/
-.modal-info-small-logo{
-  height: 25px;
+/*IMportant to show/hide anywhere */
+#footer_dialog .card-title {
+  width: 100%;
 }
 
-/***************************************
-  COLLAPSIBLE FOOTER DIALOG
-****************************************/
-#collapsible_footer_dialog {
-    position: absolute;
-    bottom: 10px;
-    z-index: 9998;
-    width: auto;
-    max-width: 460px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255,0.90);
-    padding: 5px;
-    margin: 5px;
-    margin-left: 20px;
-    -webkit-box-shadow: 0px 0px 23px -6px #333;
-    -moz-box-shadow: 0px 0px 23px -6px #333;
-    box-shadow: 0px 0px 23px -6px #333;
-}
-#collapsible_footer_dialog .panel-heading{
+#footer_dialog .card-header{
   padding: 5px;
   text-align: center;
-  background-color: rgba(255, 255, 255,0.90);
+  /* background-color: rgba(255, 255, 255,0.90); */
 }
-#collapsible_footer_dialog .panel-body{
+#footer_dialog .card-body{
   padding: 5px;
-  background-color: rgba(255, 255, 255,0.90);
+  /* background-color: rgba(255, 255, 255,0.90); */
 }
 
-#collapsible_footer_dialog .title-template-image{
-  height: 40px;
-}
-
-#collapsible_footer_dialog .title-template-title{
+#footer_dialog #footer_dialog_title{
 
 }
-
-#collapsible_footer_dialog_filter_container{
-  max-height: 360px;
-  overflow-y: auto !important;
+#footer_dialog #footer_dialog_title_image{
+height: 25px;
 }
-
 
 
 /*******************************
-  MAP SIDEBAR
+ Map Sidebars
 ********************************/
 .map-sidebar {
-  height: 100%;
+  height: 100vh;
   width: 50%;
   position: fixed;
   z-index: 99999;
   top: 0;
-  left: -50%;
   background-color: #fff;
   overflow-x: hidden;
   transition: 0.8s;
 }
 
-.map-sidebar .panel-heading{
+.map-left-sidebar {
+  left: -50%;
+  box-shadow: 2px 2px 5px rgb(0 0 0 / 12%), 2px 2px 5px rgb(0 0 0 / 24%);
+}
+
+.map-right-sidebar {
+  right: -50%;
+  box-shadow: 1px 5px 5px 5px rgb(0 0 0 / 12%), 1px 5px 5px 5px rgb(0 0 0 / 24%);
+}
+
+.map-sidebar .sidebar-light{
+  box-shadow: none;
+}
+
+.map-sidebar .sidebar-header{
   position: sticky;
   top: 0;
   left: 25px;
   margin-top: 0px;
-  margin-right: 20px;
+  margin-right: 0px;
   z-index: 9999;
+  background-color: white;
 }
 
-.map-sidebar .panel-body{
+.map-sidebar .sidebar-section-body{
   margin-top: 10px;
 }
 
 .map-sidebar .filterbtn {
   position: absolute;
   top: 0;
-  right: 40px;
+  right: 50px;
   margin-top: 12px;
   margin-left: 50px;
   z-index: 999;
@@ -243,18 +310,93 @@
   text-align: left;
 }
 
-.map-sidebar .closebtn {
+/*Left Map Sidebar*/
+#map-left-sidebar-btn{
+  height: 99vh;
+  width: 20px;
+  padding:5px;
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  transition: 0.5s;
+  background-color: rgba(219,219,219,0.4);
+  box-shadow: none;
+  
+}
+#map-left-sidebar-btn:hover{
+  background-color: rgba(255,255,255,1);
+  box-shadow: 2px 2px 5px rgb(0 0 0 / 12%), 2px 2px 5px rgb(0 0 0 / 24%);
+}
+
+#map-left-sidebar-closebtn {
   position: absolute;
   top: 0;
-  right: -5px;
+  right: 5px;
   margin-top: 10px;
   margin-left: 50px;
   z-index: 999;
 }
 
+/*Right Map Sidebar*/
+#map-right-sidebar-btn{
+  height: 99vh;
+  width: 20px;
+  padding:5px;
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  right: 0;
+  transition: 0.5s;
+  background-color: rgba(219,219,219,0.4);
+  box-shadow: none;
+  
+}
+#map-right-sidebar-btn:hover{
+  background-color: rgba(255,255,255,1);
+  box-shadow: 1px 5px 5px 5px rgb(0 0 0 / 12%), 1px 5px 5px 5px rgb(0 0 0 / 24%);
+}
+
+#map-right-sidebar-closebtn {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  margin-top: 10px;
+  margin-right: 50px;
+  z-index: 999;
+}
+
 
 /***************************************
-  USER MODE DETECTION
+ Date slider
+****************************************/
+.noUi-connect {background: #70000B;}
+
+
+/***************************************
+  Share buttons
+****************************************/
+.share_container{
+  margin-left: auto;
+  margin-right: auto;
+  width: 310px;
+}
+
+
+
+/***************************************
+  GMaps
+****************************************/
+/* .gm-svpc{
+  z-index: 99999;
+}
+.gmnoprint{
+  z-index: 99999;
+} */
+
+
+/***************************************
+  Device size
 ****************************************/
 #users-device-size{
   z-index: 9999;
@@ -265,19 +407,30 @@
 
 
 /***************************************
- SIZES
+ @media SIZES
 ****************************************/
 /*Extra small devices (portrait phones, less than 576px)*/
 @media (max-width: 575.98px) {
   .map-sidebar .title{
     margin-top: 60px !important;
   }
-  #collapsible_footer_dialog {margin-left: 5px;}
+  
+  .map-left-sidebar {
+    width: 100%;
+    left:-100%;
+  }
+
+  .map-right-sidebar {
+    width: 100%;
+    right:-100%;
+  }
+  
+  #footer_dialog {margin-left: 5px;}
 
   /*collapsible heading icon don´t show*/
-  #collapsible_footer_dialog .heading-elements-toggle{display: none}
+  #footer_dialog .heading-elements-toggle{display: none}
 
-  #collapsible_footer_dialog_filter_container{
+  #footer_dialog_filter_container{
     max-height: 400px;
   }
 
@@ -293,19 +446,30 @@
       margin-bottom: 0px;
   }
 
-  .map-sidebar {
+
+
+/*Small devices (landscape phones, less than 768px)*/
+@media (max-width: 767.98px) {
+  .map-sidebar .title{
+    margin-top: 60px !important;
+  }
+
+  .map-left-sidebar {
     width: 100%;
     left:-100%;
   }
 
-/*Small devices (landscape phones, less than 768px)*/
-@media (max-width: 767.98px) {
-  #collapsible_footer_dialog {margin-left: 5px;}
+  .map-right-sidebar {
+    width: 100%;
+    right:-100%;
+  }
+
+  #footer_dialog {margin-left: 5px;}
 
   /*collapsible heading icon don´t show*/
-  #collapsible_footer_dialog .heading-elements-toggle{display: none}
+  #footer_dialog .heading-elements-toggle{display: none}
 
-  #collapsible_footer_dialog_filter_container{
+  #footer_dialog_filter_container{
     max-height: 400px;
   }
 
@@ -315,6 +479,23 @@
       margin-top: 0px;
       margin-left: 0px;
       margin-bottom: 0px;
+  }
+  
+  .lang-selector{
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    float: right;
+    z-index: 9999 !important;
+  }
+  
+  .language-switch{
+    background-color: #eee !important;
+    border-radius: 5px;
+  }
+
+  .language-switch .btn{
+    padding: 4px !important;
   }
 
 }

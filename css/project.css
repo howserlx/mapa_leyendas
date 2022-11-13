@@ -1,17 +1,25 @@
 /*************************************************
- uxsmap.css
- v 1.2.0
+ project.css
+  v 2.0.0
 
 **************************************************/
 
 /***************************************
   PROJECT CUSTOM
 ****************************************/
+html{
+  background-color: #08304B;
+}
+body{
+  background-color: #08304B;
+}
+
 .red{color:#ea4026;}
 .blue{color:#3ca0f6;}
 .green{color:#56bf3e;}
 .purple{color:#673ab7;}
 
+/*Main Colors*/
 .map-primary-color{color:#673AB7;} /*8,48,75*/
 .bg-map-primary-color{background-color:#673AB7;} /*8,48,75*/
 .tab-primary-color.active>a:after {
@@ -30,15 +38,41 @@
 
 .uxsmap-logo-modal{height: 40px;}
 
-.disclaimer-img{
-  text-align: center;
+.business-icon{
+  width: 64px;
+  height: 64px;
 }
 
-.disclaimer-img img{
-  width: 120px;
-  height: auto;
+.btn-transparent{
+  background: transparent !important;
 }
 
+/***************************************
+  Ghost
+****************************************/
+.ghost-shadow{
+  box-shadow: 0px 0px 10px 10px #000;
+}
+
+
+/***************************************
+  Modal Disclaimer
+****************************************/
+.modal{
+  z-index: 9999;
+}
+
+.modal-close{
+position: absolute;
+  right: 15px;
+  top: 15px;
+  margin-top: 0;
+}
+
+
+/***************************************
+Modal Disclaimer
+****************************************/
 
 /***************************************
   UXSMAP
@@ -52,51 +86,42 @@
   z-index: 999;
 }
 
-/*Controls*/
-.fab-icon-open, .fab-icon-close{
-  height: 42px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -20px;
-  margin-left: -20px;
-}
 
-.main-body{
-  background: black;
-}
-
+/***************************************
+  Modal Map Info
+****************************************/
 #modal_map_info .modal-body{
   overflow-y: scroll;
   max-height: 600px;
 }
 
+
 /***************************************
-  COLLAPSIBLE FOOTER DIALOG
+  Footer Dialog
 ****************************************/
-#collapsible_footer_dialog {
+#footer_dialog {
   width: 380px;
   max-height: 600px;
   max-width: 540px !important;
-  /*background-color: #EFF0F0;*/
+  bottom:40px !important;
+
   background-color: #020607 !important;
   color:#ccc !important;
 }
-#collapsible_footer_dialog .panel-heading {
+
+#footer_dialog .card-header{
+  width: 100%;
   background-color: #020607 !important;
 }
-#collapsible_footer_dialog .panel-body {
+
+#footer_dialog #footer_dialog_title_image{
+  height: 30px;
   background-color: #020607 !important;
 }
 
-#collapsible_footer_dialog .title-template-image{
-  height: 40px;
-}
-
-#collapsible_footer_dialog .title-template-title{
+#footer_dialog #footer_dialog_title{
 
 }
-
 
 /***************************************
   day
@@ -140,8 +165,10 @@
   z-index: 999;
   left:40px;
   top:320px;
-  width: 90px;
+  width: 100px;
+  height: 100px;
   transition: all 0.5s ease;
+  padding: 0.7rem !important;
 }
 
 #day .back_init_btn:hover{
@@ -170,21 +197,21 @@
 
 #night .night-header{
   position: fixed;
-  top: -24px;
+  top: -10px;
   width: 100%;
-  height: 80px;
-  background: url("../img/dia_muertos_header.png") repeat-x;
-  background-size: 180px;
+  height: 50px;
+  background: url(../img/map-header.png) repeat-x;
+  background-size: 270px;
 }
 
 #night .night-footer{
   position: fixed;
-  bottom: -30px;
+  bottom: -5px;
   width: 100%;
-  height: 80px;
+  height: 54px;
   margin-left: 70px;
-  background: url("../img/dia_muertos_footer.png") repeat-x;
-  background-size: 200px;
+  background: url("../img/map-footer.png") repeat-x;
+  background-size: 197px;
 }
 
 
@@ -233,26 +260,37 @@
   leyenda in map
 ****************************************/
 .legend_name_label{
-  color: #ccc;
+  color: #ddd;
   background-color: #020607;
   font-family: 'Alegreya SC', serif;
   font-size: 15px;
   font-weight: bold;
   text-align: center;
   width: auto;
-  border: 2px solid #ccc;
+  border: 2px solid #888;
   white-space: nowrap;
+  padding: 0.3em 0.5em;
+  border-radius: 1em;
 }
 
 
 /***************************************
   leyenda modal
 ****************************************/
+#modal_map_leyenda .btn-opacity{
+   opacity: 0.7; 
+}
+#modal_map_leyenda .modal-close{
+  opacity: 0.5; 
+  z-index: 999;
+}
+
 .leyenda_modal_background{
   /*background: #041826;*/
   background: #020607;
   color:#ccc;
-  font-size: 1.2em;
+  font-size: 15px;
+  font-weight: 300;
 
   -webkit-box-shadow: 0px 0px 48px 8px rgba(0,0,0,0.62);
   -moz-box-shadow: 0px 0px 48px 8px rgba(0,0,0,0.62);
@@ -265,11 +303,11 @@
 
 /*Leyenda Title*/
 #modal_map_leyenda_title{
-  position: fixed;
+  position: absolute;
   float: left;
   text-align: center;
   width: 100%;
-  top: 16px;
+  top: 26px;
   line-height: 40px;
   padding-left: 30px;
   padding-right: 30px;
@@ -282,7 +320,7 @@
 
 /*Leyenda Place*/
 #modal_map_leyenda_place{
-  position: fixed;
+  position: absolute;
   float: left;
   text-align: center;
   width: 100%;
@@ -292,6 +330,15 @@
   font-size: 22px;
   color: #FFFFFF;
   text-shadow: 0 0 4px #FFFFFF;
+}
+
+#modal_map_leyenda .modal-footer{
+  display: block;
+  margin-bottom: 30px;
+}
+
+#modal_map_leyenda .modal-footer>.btn+.btn {
+  margin-left: 0.5rem;
 }
 
 /*Video Youtube Responsive*/
@@ -367,23 +414,30 @@
 
 
 
+
 /*******************************
-  MAP SIDEBAR
+ Map Sidebars
 ********************************/
 .map-sidebar {
-
+ 
 }
 
-.map-sidebar .panel-heading{
-
+.map-left-sidebar {
+ 
 }
 
-.map-sidebar .panel-body{
-
+.map-right-sidebar {
+ 
 }
 
-.map-sidebar .closebtn {
+.map-sidebar .sidebar-light{
+}
 
+.map-sidebar .sidebar-header{
+  
+}
+
+.map-sidebar .sidebar-section-body{
 }
 
 .map-sidebar .filterbtn {
@@ -391,6 +445,33 @@
 }
 
 .map-sidebar .filtercount{
+
+}
+
+/*Left Map Sidebar*/
+#map-left-sidebar-btn{
+
+  
+}
+#map-left-sidebar-btn:hover{
+
+}
+
+#map-left-sidebar-closebtn {
+
+}
+
+/*Right Map Sidebar*/
+#map-right-sidebar-btn{
+
+  
+}
+#map-right-sidebar-btn:hover{
+
+}
+
+#map-right-sidebar-closebtn {
+
 }
 
 /***************************************
@@ -411,48 +492,65 @@
  Google Maps
 ****************************************/
 .gm-style .gm-style-iw-a {
+
 }
 
 /***************************************
- SIZES
+ @media SIZES
 ****************************************/
 /*Extra small devices (portrait phones, less than 576px)*/
 @media (max-width: 575.98px) {
-  #collapsible_footer_dialog {
-    width: 340px;
+  .map-sidebar {
+   
+  }
+  
+  .map-left-sidebar {
+   
+  }
+
+  #footer_dialog {
+    width: 320px;
+    z-index: 12;
+  }
+  
+  #footer_dialog #footer_dialog_title_image{
+    height: 20px;
   }
 
   #night .footer{
     position: fixed;
-    bottom: -20px;
+    bottom: -5px;
     width: 100%;
-    height: 80px;
+    height: 54px;
     margin-left: 0PX;
-    background: url("../img/dia_muertos_footer.png") repeat-x;
-    background-size: 200px;
+    background: url("../img/map-footer.png") repeat-x;
+    background-size: 197px;
   }
 
   #modal_map_leyenda .modal-body {
       position: relative;
       padding: 10px;
   }
-
 }
 
 /*Small devices (landscape phones, less than 768px)*/
 @media (max-width: 767.98px) {
-  #collapsible_footer_dialog {
-    width: 360px;
+  .map-sidebar {
+   
+  }
+  
+  .map-left-sidebar {
+   
   }
 
   #night .footer{
     position: fixed;
-    bottom: -20px;
+    bottom: -5px;
     width: 100%;
-    height: 80px;
+    height: 54px;
     margin-left: 0PX;
-    background: url("../img/dia_muertos_footer.png") repeat-x;
-    background-size: 200px;
+    background: url("../img/map-footer.png") repeat-x;
+    background-size: 197px;
   }
 
   #modal_map_leyenda .modal-body {
@@ -479,18 +577,22 @@
   #modal_map_leyenda_place{
     display: none;
     }
+  
+  #footer_dialog {
+    width: 360px;
   }
+}
 
 /*Medium devices (tablets, less than 992px)*/
 @media (max-width: 991.98px) {
   #night .footer{
     position: fixed;
-    bottom: -20px;
+    bottom: -5px;
     width: 100%;
-    height: 80px;
+    height: 54px;
     margin-left: 0PX;
-    background: url("../img/dia_muertos_footer.png") repeat-x;
-    background-size: 200px;
+    background: url("../img/map-footer.png") repeat-x;
+    background-size: 197px;
   }
 
   #modal_map_leyenda .modal-body {
