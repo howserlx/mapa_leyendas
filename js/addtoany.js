@@ -30,7 +30,7 @@ function my_addtoany_onready() {
   p_share_url = p_share_url.replace(/\s/g,'%20');
   a2a_config.locale = "es"
   a2a_config.target = '.share-this';
-  a2a_config.linkname = p_title + ' - ¡Conoce las 👻leyendas, mitos e historias de terror de México 😱!';
+  a2a_config.linkname = 'Conoce las leyendas e historias en el Mapa de Leyendas de México👻🕯️💀' + ' - ¡'+ p_title +'!';
   a2a_config.linkurl = p_share_url;
   a2a.init('page');
 }

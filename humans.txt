@@ -4,12 +4,14 @@
 /* TEAM */
 Juan Francisco Gerardo Hernández
 Karen Kimbeerley Colmenero Delgado
+Gabriela Vega Eraña
+Daniela Morán Villasana
 
 /* THANKS */
 
 
 /* SITE */
-https://www.uxmalsoft.com.mx/
+https://mapadeleyendas.com/
 
-Last update: 2020//
+Last update: 2022//
 
