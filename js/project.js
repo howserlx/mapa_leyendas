@@ -1,99 +1,122 @@
 /*******************************
  project.js
- v 1.3
+  v 2.0.0
 ********************************/
-var initLat = 22.152027;
-var initLng = -100.978453;
+let initLat = 22.152027;
+let initLng = -100.978453;
 
-var initZoom = 13;
-var finalZoom = 17;
+let initZoom = 13;
+let finalZoom = 17;
 
-var geolocationZoom = 15;
+let geolocationZoom = 15;
 
-var currentLat = 22.152027;
-var currentLng = -100.978453;
+let currentLat = 22.152027;
+let currentLng = -100.978453;
 
-var map; //map object
-var panorama; //street view object
-var infowindow; //global info window
-var titlewindow; //global title window
+let map; //map object
+let panorama; //street view object
+let infowindow; //global info window
+let titlewindow; //global title window
 const SHOW_LABELS = true;
 
-const LOREM_IPSUM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-
+const LOREM_IPSUM =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
 //GMap Controls
-//var gmap_restriction = null; /*boundary that restricts the area of the map accessible to users*/
+//let gmap_restriction = null; /*boundary that restricts the area of the map accessible to users*/
 
-var gmap_restriction = {
+/*Mexico*/
+let gmap_restriction = {
   latLngBounds: {
-    north: 36.49744201329152, 
-    south: 10.722654154816919, 
+    north: 36.49744201329152,
+    south: 10.722654154816919,
     west: -127.9474281164977,
     east: -71.85858914732421,
   },
   strictBounds: false,
 };
 
+/*
+let gmap_restriction = {
+  latLngBounds: {
+    north: 0, 
+    south: 0, 
+    west: 0,
+    east: 0,
+  },
+  strictBounds: false,
+};
+*/
 
-var gmap_backgroundColor = '#fff'; //
-var gmap_backgroundColor_night = 'rgb(8,48,75)'; //important in rgb
-var gmap_backgroundColor_day = 'rgb(236,234,228)'; //important in rgb
+let gmap_backgroundColor = "#08304b"; //
+let gmap_backgroundColor_night = "rgb(8,48,75)"; //important in rgb
+let gmap_backgroundColor_day = "rgb(236,234,228)"; //important in rgb
 
-var gmap_mapTypeId = 'roadmap';
+let gmap_mapTypeId = "roadmap";
 
-var gmap_maxZoom = 21;
-var gmap_minZoom = 6;
+let gmap_maxZoom = 19;
+let gmap_minZoom = 12;
 
-var gmap_mapTypeControl = false;
-var gmap_fullscreenControl = false;
-var gmap_zoomControl = true;
-var gmap_streetViewControl = true;
+let gmap_mapTypeControl = false;
+let gmap_fullscreenControl = false;
+let gmap_zoomControl = true;
+let gmap_streetViewControl = true;
 
+const DEFAULT_MAP_HEADING = 0;
+const DEFAULT_MAP_TILT = 40;
+const DEFAULT_MAP_ID = '3003f95cd67dcdff';
 
 //LAYERS
 //-----------------------------------------------------------------
-var layers = [];
-layers['traffic']  = {src:'', layer:null, status:true, loaded:false, style:{icon:'traffic',display_name:'Tráfico'}};
-layers['cementerio']  = {src:'', layer:null, status:true, loaded:false, style:{icon:'cementerio',display_name:'Cementerios'}};
-layers['panteon']  = {src:'', layer:null, status:true, loaded:false, style:{icon:'panteon',display_name:'Panteónes'}};
+let layers = [];
+layers["traffic"] ={src:'', layer:null, status:true, loaded:false, style:{icon:'traffic',display_name:'Tráfico'}};
 
-var cementerio = layers['cementerio'];
-var panteon = layers['panteon'];
-var trafficLayer = layers['traffic'];
+layers["cementerio"] = {
+  src: "",
+  layer: null,
+  status: true,
+  loaded: false,
+  style: { icon: "graveyard", display_name: "Cementerios" },
+};
+layers["panteon"] = {
+  src: "",
+  layer: null,
+  status: true,
+  loaded: false,
+  style: { icon: "graveyard", display_name: "Panteónes" },
+};
 
+let cementerio = layers["cementerio"];
+let panteon = layers["panteon"];
+let trafficLayer = layers["traffic"];
 
 //PLACES
 //-----------------------------------------------------------------
-var places = [];
-places['a'] = {lat:21.0, lng:-100.0, title:'a', zoom:5, final_zoom:15, icon:'a.png', marker:null, data:{name:'a',title:'a',description:'a'}}
-
-
+let places = [];
+places["a"] = {
+  lat: 21.0,
+  lng: -100.0,
+  title: "a",
+  zoom: 5,
+  final_zoom: 15,
+  icon: "a.png",
+  marker: null,
+  data: { name: "a", title: "a", description: "a" },
+};
 
 //AUDIO
 //-----------------------------------------------------------------
-var audio;
-var audio_loop;
-var soundEnabled = false;
+let audio;
+let audio_loop;
+let soundEnabled = false;
 
+const AUDIO_ON_CLASS = "icon-volume-high";
+const AUDIO_OFF_CLASS = "icon-volume-mute5";
 
-const AUDIO_ON_CLASS = 'icon-volume-high';
-const AUDIO_OFF_CLASS = 'icon-volume-mute5';
+let sounds = [];
+sounds["music"] = { file: "sound/ghost_stories.mp3", volume: 0.5 };
+sounds["ghost_scream"] = { file: "sound/ghost_scream.mp3", volume: 0.7 };
 
-var sounds = [];
-sounds['background_sound'] = {file:'sound/ghost_stories.mp3', volume:0.5};
-sounds['ghost_scream'] = {file:'sound/ghost_scream.mp3', volume:0.7};
-
-
-
-//DENUE API
-//-----------------------------------------------------------------
-const DENUE_API_BUSCAR_URL = 'https://www.inegi.org.mx/app/api/denue/v1/consulta/Buscar/{{CONDICION}}/{{COORDENADAS}}/{{DISTANCIA}}/{{TOKEN}}';
-const DENUE_API_DISTANCIA = 5000;
-const DENUE_API_TOKEN = '34ee721d-a395-4ca5-a4bd-154bae8c9ff7';
-
-const DENUE_API_LAT_ATTR = 'Latitud';
-const DENUE_API_LNG_ATTR = 'Longitud';
 
 
 //MAP CONTROL
@@ -101,694 +124,847 @@ const DENUE_API_LNG_ATTR = 'Longitud';
 const MAP_FIRST_HOUR = 6; //daytime
 const MAP_LAST_HOUR = 19; //daytime
 
-var firstUserInteracion = false; //user interaction
+let firstUserInteracion = false; //user interaction
 
-var mapModeON = true;
-var html5GeolocationEnabled = true; //enables html5Geolocation
-var html5GeolocationInit = false //enables html5Geolocation when page is loaded
-var showDisclaimer = false;
+let mapModeON = true;
+let html5GeolocationEnabled = true; //enables html5Geolocation
+let html5GeolocationInit = false; //enables html5Geolocation when page is loaded
+let showDisclaimer = false;
 
 const DELAY_1 = 1000;
 const DELAY_2 = 1000;
 const DELAY_3 = 1000;
 
-
 //DIALOGS
 //-----------------------------------------------------------------
-const TITLE_TEMPLATE = '<img class="title-template-image" src="{{IMAGE}}"/> <small class="title-template-title">{{TITLE}}<small>';
-const INFO_TEMPLATE = '<table class="data-table"> 	<tbody> 	<tr> 		<td> 			<img class="data-image" src="{{IMAGE}}"> 		</td>  		<td> 			<h5 class="data-title">{{NOMBRE}}</h5> 			<h6 class="data-field">{{CLASE_ACTIVIDAD}}</h6> 		</td> 	</tr> 	</tbody> </table>';
+const TITLE_TEMPLATE =
+  '<img class="title-template-image" src="{{IMAGE}}"/> <small class="title-template-title">{{TITLE}}<small>';
+const INFO_TEMPLATE =
+  '<table class="data-table"> 	<tbody> 	<tr> 		<td> 			<img class="data-image" src="{{IMAGE}}"> 		</td>  		<td> 			<h5 class="data-title">{{NOMBRE}}</h5> 			<h6 class="data-field">{{CLASE_ACTIVIDAD}}</h6> 		</td> 	</tr> 	</tbody> </table>';
 
-const COLLAPSIBLE_FOOTER_DIALOG_TITLE = 'Project';
-
+const FOOTER_DIALOG_TITLE = "Project";
 
 //SIDEBAR
-var sidebarOpen = false;
-
+let mapLeftSidebarOpen = false;
+let mapRightSidebarOpen = false;
 
 //FILTER
-var $total_count  = 0;
-var $filter_count = 0;
-
-
+let $total_count = 0;
+let $filter_count = 0;
 
 //LEGEND
 //============================================================
 
 //templates dialog
-const AUTOR_TEMPLATE = '{{AUTOR_NAME}} <a href="https://instagram.com/{{AUTOR_IG}}" target="_blank">@{{AUTOR_IG}}</a> / <a href="https://www.instagram.com/{{MEDIA_IG}}/" target="_blank">@{{MEDIA_IG}}</a>';
-const SOUNDCLOUD_TEMPLATE = '<iframe width="100%" height="500" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url={{URL}}&color=%230e415c&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="{{URL}}" title="Midnight Strike" target="_blank" style="color: #cccccc; text-decoration: none;">Midnight Strike</a> · <a href="{{URL}}" title="{{TITLE}}" target="_blank" style="color: #cccccc; text-decoration: none;">{{TITLE}}</a></div>';
-const VIDEO_TEMPLATE = '<div class="video-responsive"><iframe src="https://www.youtube.com/embed/{{VIDEO_ID}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
-const REEL_TEMPLATE = '<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/{{REEL_ID}}/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="13" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/{{REEL_ID}}/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;"> View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/{{REEL_ID}}/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank"></a></p></div></blockquote> <script async src="//www.instagram.com/embed.js"></script>';
-const TIKTOK_TEMPLATE = '<blockquote class="tiktok-embed" cite="https://www.tiktok.com/{{TIKTOK_USER}}/video/{{TIKTOK_ID}}" data-video-id="{{TIKTOK_ID}}" style="border:none; width:100%; max-width:605px;min-width: 325px;" > <section> <a target="_blank" title="{{TIKTOK_USER}}" href="https://www.tiktok.com/{{TIKTOK_USER}}">{{TIKTOK_USER}}</a> </section> </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>';
+const AUTOR_TEMPLATE =
+  '{{AUTOR_NAME}} <a href="https://instagram.com/{{AUTOR_IG}}" target="_blank">@{{AUTOR_IG}}</a> / <a href="https://www.instagram.com/{{MEDIA_IG}}/" target="_blank">@{{MEDIA_IG}}</a>';
+const SOUNDCLOUD_TEMPLATE =
+  '<iframe width="100%" height="500" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url={{URL}}&color=%230e415c&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="{{URL}}" title="Midnight Strike" target="_blank" style="color: #cccccc; text-decoration: none;">Midnight Strike</a> · <a href="{{URL}}" title="{{TITLE}}" target="_blank" style="color: #cccccc; text-decoration: none;">{{TITLE}}</a></div>';
+const VIDEO_TEMPLATE =
+  '<div class="video-responsive"><iframe src="https://www.youtube.com/embed/{{VIDEO_ID}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+const REEL_TEMPLATE =
+  '<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/{{REEL_ID}}/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="13" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/{{REEL_ID}}/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;"> View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/{{REEL_ID}}/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank"></a></p></div></blockquote> <script async src="//www.instagram.com/embed.js"></script>';
+const TIKTOK_TEMPLATE =
+  '<blockquote class="tiktok-embed" cite="https://www.tiktok.com/{{TIKTOK_USER}}/video/{{TIKTOK_ID}}" data-video-id="{{TIKTOK_ID}}" style="border:none; width:100%; max-width:605px;min-width: 325px;" > <section> <a target="_blank" title="{{TIKTOK_USER}}" href="https://www.tiktok.com/{{TIKTOK_USER}}">{{TIKTOK_USER}}</a> </section> </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>';
 
-var CVEGEO; /* Entidad actual (queryparams)*/
-var ENTIDAD = '';
+let CVEGEO; /* Entidad actual (queryparams)*/
+let ENTIDAD = "";
 
 //Leyendas Info
-var LEYENDAS_INFO_PATH = 'leyendas.json?v=' + moment.now().toString();
-var leyendas;
-var INIT_LEYENDA; /* Leyenda Inicial (queryparams) */
+let LEYENDAS_INFO_PATH = "leyendas.json?v=" + moment.now().toString();
+let leyendas; 
+let INIT_LEYENDA; /* Leyenda Inicial (queryparams) */
 
-var leyenda_has_media = false; //if leyend dialog shows media (pause music)
+let leyenda_has_media = false; //if leyend dialog shows media (pause music)
 
 //Leyendas Paths
-var leyendasPointArray = [];
+let leyendasPointArray = [];
 
 //ghost symbol
-const GHOST_SVG_1 = 'M625.21,170.17c0.61-6.28-1.04-12.27-3.23-17.94c-2.6-6.75-7.1-12.18-14.96-12.98 				c-7.72-0.79-13.67,2.37-18.32,8.68c-6.04,8.19-8.85,17.77-12.21,27.07c-5.46,15.1-15.75,25.39-30.06,32.12 				c-1.97,0.93-3.03,0.45-4.11-1.03l0,0c-1.6-14.73-4.87-29.06-10.03-42.96l0,0c-11.51-33.56-30.02-62.43-57.61-85.07 				c-31.35-25.73-66.95-37.71-107.7-32.93c-18.98,2.22-37.09,7.44-54.12,15.94c-20.96,10.46-39.57,24.06-55.05,41.96 				c-14.31,16.55-24.8,35.24-33.55,55.08c-6.71,15.23-11.61,31.06-15.47,47.23c-0.44,1.85-0.37,4.24-3.41,3.79l0,0 				c-4.33-2-8.66-3.99-12.99-5.99l0,0l0,0c-12.28-8.38-19.93-19.89-24.3-34.08c-2.37-7.71-5.7-15.16-10.57-21.86 				c-7.97-10.96-23.07-10.81-30.46,0.55c-3.63,5.58-5.1,11.93-5.53,18.34c-1.8,26.46,3.2,51.52,16.73,74.55 				c5.03,8.56,10.43,16.92,18.09,23.5c12.21,13.61,27.22,23.1,44.02,29.97l0,0c0.33,1.1,0.92,2.19,0.97,3.3 				c0.83,19.21,3.42,38.18,7.01,57.06c6.17,32.41,16.41,63.19,35.09,90.76c9.31,13.74,18.76,27.32,30.87,38.82 				c4.39,5.25,9.53,9.7,14.68,14.17c19.99,17.35,42.61,30.12,67.7,38.26c27.34,8.87,55.42,11.41,84.08,8.64 				c26.93-2.6,53.06-8.44,78.23-18.29c14.28-5.59,28.03-12.26,38.8-23.77c6.72-7.18,8.14-15.45,5.41-24.49 				c-2.36-7.82-7.9-11.57-16.06-11.62c-5-0.03-10,0.26-14.98-0.01c-5.96-0.33-11.36-2.18-15.48-6.92 				c-7.17-8.26-8.45-18.46-8.13-28.55c0.46-14.45,4-28.51,8.16-42.37c8.4-27.97,16.18-56.12,21.3-84.9c1.03-5.77,3.6-8.17,8.7-10.28 				c22.61-9.34,41.44-23.67,55.56-43.88C619.06,226.05,626.66,199.41,625.21,170.17z';
-const GHOST_SVG_2 = 'M412.63,304.85c-0.13,3.34-0.17,7.32-0.97,11.28c-3.44,16.9-13.45,26.48-30.46,29.2 				c-7.17,1.14-14.3,1.05-21.35-0.47c-13.92-3-23.49-11.14-26.75-25.19c-4.48-19.31-1.87-37.84,8.98-54.62 				c9.14-14.13,25.06-19.64,40.57-14.8c9.76,3.05,16.5,9.72,21.44,18.41C409.66,278.44,412.59,290.79,412.63,304.85z';
-const GHOST_SVG_3 = 'M391.77,171.56c0,8.95-7.26,16.21-16.21,16.21s-16.21-7.26-16.21-16.21s7.26-35.95,16.21-35.95 		C384.51,135.61,391.77,162.61,391.77,171.56z';
-const GHOST_SVG_4 = 'M476.32,121.53c5.97,6.67,5.4,16.92-1.28,22.89c-6.67,5.97-16.92,5.4-22.89-1.28s-18.56-31.63-11.88-37.6 		C446.94,99.58,470.35,114.86,476.32,121.53z';
-const GHOST_SVG_5 = 'M320.82,105.54c6.67,5.97-5.91,30.93-11.88,37.6s-16.22,7.24-22.89,1.28c-6.67-5.97-7.24-16.22-1.28-22.89 		C290.74,114.86,314.15,99.58,320.82,105.54z';
-const GHOST_SVG_6 = 'M414.34,546.15c59.5,1.36,28.12-68.02-8.38-20.09c36.5-47.94-44.03-58.23-20.77-2.65 			c-23.27-55.58-72.23,5.04-13.08,17.42c-0.06-0.01,10.62,2.57,20.76,3.76C403.02,545.77,414.4,546.15,414.34,546.15z';
-const GHOST_SVG_7 = 'M390.2,526.93c-6.82,1.17-11.95,6.88-12.83,13.75l-0.07,1.3c0,0,8.72,1.76,15.59,2.61s16.1,1.39,16.1,1.39 			l0.21-1.22C410.52,534.34,401.55,524.98,390.2,526.93z';
-const GHOST_SVG_8 = 'M335.49,218.91c5.14-1.74,8.84-6.58,8.84-12.31c0-7.18-5.09-13.44-14.84-12.85c1.16-1.95,1.84-4.21,1.84-6.64 			c0-7.18-5.82-13-13-13c-4.09,0-7.74,1.9-10.12,4.86c-0.81-6.4-6.26-11.36-12.88-11.36c-5.46,0-10.13,3.37-12.05,8.15 			c-2.26-3.83-6.44-6.8-11.19-6.41c0,0-13.29,0.98-12.64,15.99c-2.07-1.39-4.56-2.21-7.25-2.21c-7.18,0-13,5.82-13,13 			c0,3.58,1.45,6.82,3.79,9.17c-6.88,0.33-12.37,6-12.37,12.97c0,6.47,4.73,11.82,10.93,12.82c-2.41,2.36-3.91,5.64-3.91,9.28 			c0,7.18,5.82,13,13,13c1.57,0,3.08-0.29,4.47-0.81c-0.45,1.32-0.7,2.72-0.7,4.19c0,7.18,5.82,13,13,13c5.16,0,9.6-3.01,11.7-7.36 			c2.1,4.35,6.54,7.36,11.7,7.36c7.18,0,14.66-6.51,12.95-13.92c2.37,2.49,5.7,4.04,9.41,4.04c7.18,0,13-5.82,13-13 			c0-1.51-0.27-2.95-0.74-4.3c1.07,0.28,2.19,0.45,3.34,0.45c7.18,0,13-5.82,13-13C341.75,225.3,339.24,221.19,335.49,218.91z';
-const GHOST_SVG_9 = 'M293.34,253.98c-18.84,6.09-39.06-4.25-45.15-23.1s4.25-39.06,23.1-45.15s52.13,0.03,58.22,18.87 			C335.6,223.46,312.19,247.9,293.34,253.98z';
-const GHOST_SVG_10 = 'M269.55,232.01c-6.09-18.84,4.25-39.06,23.1-45.15c2.74-0.89,5.8-1.51,9.03-1.87 			c-10.53-2.24-21.91-1.98-30.38,0.75c-18.84,6.09-29.19,26.3-23.1,45.15c5.86,18.14,24.8,28.39,43.01,23.71 			C281.28,250.91,273.07,242.88,269.55,232.01z';
-const GHOST_SVG_11 = 'M516.27,218.26c0-6.97-5.48-12.64-12.37-12.97c2.34-2.35,3.79-5.59,3.79-9.17c0-7.18-5.82-13-13-13 			c-2.68,0-5.18,0.81-7.25,2.21c1.2-11.41-5.46-15.99-12.64-15.99c-4.77,0-8.93,2.58-11.19,6.41c-1.92-4.77-6.59-8.15-12.05-8.15 			c-6.62,0-12.07,4.95-12.88,11.36c-2.38-2.96-6.03-4.86-10.12-4.86c-7.18,0-13,5.82-13,13c0,2.43,0.68,4.7,1.84,6.64 			c-9.89-0.86-14.84,5.67-14.84,12.85c0,5.72,3.7,10.57,8.84,12.31c-3.75,2.28-6.26,6.39-6.26,11.1c0,7.18,5.82,13,13,13 			c1.16,0,2.28-0.17,3.34-0.45c-0.47,1.35-0.74,2.79-0.74,4.3c0,7.18,5.82,13,13,13c3.7,0,7.04-1.56,9.41-4.04 			c-0.88,8.52,5.77,13.92,12.95,13.92c5.16,0,9.6-3.01,11.7-7.36c2.1,4.35,6.54,7.36,11.7,7.36c7.18,0,15.67-8.31,12.3-17.18 			c1.4,0.51,2.9,0.81,4.47,0.81c7.18,0,13-5.82,13-13c0-3.64-1.5-6.92-3.91-9.28C511.53,230.08,516.27,224.73,516.27,218.26z';
-const GHOST_SVG_12 = 'M453.54,253.98c18.84,6.09,39.06-4.25,45.15-23.1c6.09-18.84-4.25-39.06-23.1-45.15s-52.13,0.03-58.22,18.87 			C411.28,223.46,434.69,247.9,453.54,253.98z';
-const GHOST_SVG_13 = 'M441.04,205.74c3.78-11.7,18.04-18.49,32.82-20.5c-19.08-5.2-50.59,1.1-56.5,19.38 			c-6.09,18.84,17.33,43.28,36.17,49.37c7.18,2.32,14.55,2.25,21.27,0.24C456.44,246.95,435.21,223.79,441.04,205.74z';
-const GHOST_SVG_14 = 'M318.85,58.23c-1.01,11.58,9.48,24.71,31.36,15.64c-41.83,17.33,1.84,60.99,19.16,19.16 			c-17.33,41.83,44.43,41.83,27.1,0c17.33,41.83,60.99-1.84,19.16-19.16c21.88,9.06,32.25-2.79,31.24-14.36 			c-19.56-10.18-41-15.41-63.95-15.41C359.97,44.1,337.96,49.99,318.85,58.23z';
-const GHOST_SVG_15 = 'M364.83,45.21c-3.42,4.09-5.48,9.36-5.48,15.11c0,13.02,10.56,23.58,23.58,23.58s23.58-10.56,23.58-23.58 			c0-5.75-2.06-11.02-5.48-15.11c-5.93-0.73-11.97-1.11-18.1-1.11C376.8,44.1,370.76,44.48,364.83,45.21z';
+// const GHOST_SVG_1 =
+//   "M625.21,170.17c0.61-6.28-1.04-12.27-3.23-17.94c-2.6-6.75-7.1-12.18-14.96-12.98 				c-7.72-0.79-13.67,2.37-18.32,8.68c-6.04,8.19-8.85,17.77-12.21,27.07c-5.46,15.1-15.75,25.39-30.06,32.12 				c-1.97,0.93-3.03,0.45-4.11-1.03l0,0c-1.6-14.73-4.87-29.06-10.03-42.96l0,0c-11.51-33.56-30.02-62.43-57.61-85.07 				c-31.35-25.73-66.95-37.71-107.7-32.93c-18.98,2.22-37.09,7.44-54.12,15.94c-20.96,10.46-39.57,24.06-55.05,41.96 				c-14.31,16.55-24.8,35.24-33.55,55.08c-6.71,15.23-11.61,31.06-15.47,47.23c-0.44,1.85-0.37,4.24-3.41,3.79l0,0 				c-4.33-2-8.66-3.99-12.99-5.99l0,0l0,0c-12.28-8.38-19.93-19.89-24.3-34.08c-2.37-7.71-5.7-15.16-10.57-21.86 				c-7.97-10.96-23.07-10.81-30.46,0.55c-3.63,5.58-5.1,11.93-5.53,18.34c-1.8,26.46,3.2,51.52,16.73,74.55 				c5.03,8.56,10.43,16.92,18.09,23.5c12.21,13.61,27.22,23.1,44.02,29.97l0,0c0.33,1.1,0.92,2.19,0.97,3.3 				c0.83,19.21,3.42,38.18,7.01,57.06c6.17,32.41,16.41,63.19,35.09,90.76c9.31,13.74,18.76,27.32,30.87,38.82 				c4.39,5.25,9.53,9.7,14.68,14.17c19.99,17.35,42.61,30.12,67.7,38.26c27.34,8.87,55.42,11.41,84.08,8.64 				c26.93-2.6,53.06-8.44,78.23-18.29c14.28-5.59,28.03-12.26,38.8-23.77c6.72-7.18,8.14-15.45,5.41-24.49 				c-2.36-7.82-7.9-11.57-16.06-11.62c-5-0.03-10,0.26-14.98-0.01c-5.96-0.33-11.36-2.18-15.48-6.92 				c-7.17-8.26-8.45-18.46-8.13-28.55c0.46-14.45,4-28.51,8.16-42.37c8.4-27.97,16.18-56.12,21.3-84.9c1.03-5.77,3.6-8.17,8.7-10.28 				c22.61-9.34,41.44-23.67,55.56-43.88C619.06,226.05,626.66,199.41,625.21,170.17z";
+
+
+// const GHOST_SVG_1 = "m 39.875,335.773 c 6.414,-6.342 16.546,-21.738 27.259,-59.074 0,0 12.485,-44.513 61.883,-41.799 0,0 10.314,-0.542 15.743,10.314 0,0 4.885,3.8 7.599,-14.656 0,0 3.8,-18.457 26.057,-4.343 0,0 15.199,-166.11 165.567,-164.481 0,0 88.483,-0.542 111.825,99.883 0,0 6.515,26.057 4.343,64.055 0,0 0,6.514 9.229,-2.714 0,0 19.542,-13.028 21.714,10.314 0,0 3.8,8.143 17.371,-3.257 0,0 43.427,-23.885 71.111,30.399 0,0 12.485,23.342 43.428,22.799 0,0 9.229,1.628 0,9.771 0,0 -14.658,7.6 -17.371,16.286 0,0 -6.516,31.484 -38.529,16.13 -2.878,-1.38 -17.928,-18.843 -26.612,12.097 0,0 -2.604,4.05 -7.601,4.337 -1.847,0.105 -9.361,-1.445 -13.146,0.892 -5.563,3.436 -13.155,11.538 -16.709,30.599 -5.972,32.027 -0.543,113.997 46.684,151.995 0,0 37.812,29.783 -11.941,34.742 -2.836,0.279 -77.627,20.086 -28.229,74.912 0,0 11.943,14.656 -7.6,11.4 -19.542,-3.258 -51.027,-5.973 -70.57,13.027 0,0 -26.057,31.486 -54.283,5.971 0,0 -21.413,-23.342 -47.076,3.801 0,0 -16.98,17.371 -57.15,1.627 0,0 -15.032,-4.766 -23.102,4.383 -1.75,1.984 -12.726,20.047 -19.24,5.391 0,0 -16.828,-99.342 -54.284,-121.055 0,0 -29.313,-19 -53.498,8.143 0,0 -8.929,3.799 -5.672,-9.229 3.257,-13.027 50.484,-107.482 34.199,-159.595 0,0 -7.058,-34.743 -28.527,-30.399 0,0 -26.843,8.142 -29.014,-5.429 0,0 -0.543,-23.342 -26.057,-9.771 0,0 -47.234,19.084 -37.483,-7.157 0.651,-1.749 5.373,-6.045 9.682,-10.309 z";
+   
+
+// const GHOST_SVG_2 =
+//   "M412.63,304.85c-0.13,3.34-0.17,7.32-0.97,11.28c-3.44,16.9-13.45,26.48-30.46,29.2 				c-7.17,1.14-14.3,1.05-21.35-0.47c-13.92-3-23.49-11.14-26.75-25.19c-4.48-19.31-1.87-37.84,8.98-54.62 				c9.14-14.13,25.06-19.64,40.57-14.8c9.76,3.05,16.5,9.72,21.44,18.41C409.66,278.44,412.59,290.79,412.63,304.85z";
+// const GHOST_SVG_3 =
+//   "M391.77,171.56c0,8.95-7.26,16.21-16.21,16.21s-16.21-7.26-16.21-16.21s7.26-35.95,16.21-35.95 		C384.51,135.61,391.77,162.61,391.77,171.56z";
+// const GHOST_SVG_4 =
+//   "M476.32,121.53c5.97,6.67,5.4,16.92-1.28,22.89c-6.67,5.97-16.92,5.4-22.89-1.28s-18.56-31.63-11.88-37.6 		C446.94,99.58,470.35,114.86,476.32,121.53z";
+// const GHOST_SVG_5 =
+//   "M320.82,105.54c6.67,5.97-5.91,30.93-11.88,37.6s-16.22,7.24-22.89,1.28c-6.67-5.97-7.24-16.22-1.28-22.89 		C290.74,114.86,314.15,99.58,320.82,105.54z";
+// const GHOST_SVG_6 =
+//   "M414.34,546.15c59.5,1.36,28.12-68.02-8.38-20.09c36.5-47.94-44.03-58.23-20.77-2.65 			c-23.27-55.58-72.23,5.04-13.08,17.42c-0.06-0.01,10.62,2.57,20.76,3.76C403.02,545.77,414.4,546.15,414.34,546.15z";
+// const GHOST_SVG_7 =
+//   "M390.2,526.93c-6.82,1.17-11.95,6.88-12.83,13.75l-0.07,1.3c0,0,8.72,1.76,15.59,2.61s16.1,1.39,16.1,1.39 			l0.21-1.22C410.52,534.34,401.55,524.98,390.2,526.93z";
+// const GHOST_SVG_8 =
+//   "M335.49,218.91c5.14-1.74,8.84-6.58,8.84-12.31c0-7.18-5.09-13.44-14.84-12.85c1.16-1.95,1.84-4.21,1.84-6.64 			c0-7.18-5.82-13-13-13c-4.09,0-7.74,1.9-10.12,4.86c-0.81-6.4-6.26-11.36-12.88-11.36c-5.46,0-10.13,3.37-12.05,8.15 			c-2.26-3.83-6.44-6.8-11.19-6.41c0,0-13.29,0.98-12.64,15.99c-2.07-1.39-4.56-2.21-7.25-2.21c-7.18,0-13,5.82-13,13 			c0,3.58,1.45,6.82,3.79,9.17c-6.88,0.33-12.37,6-12.37,12.97c0,6.47,4.73,11.82,10.93,12.82c-2.41,2.36-3.91,5.64-3.91,9.28 			c0,7.18,5.82,13,13,13c1.57,0,3.08-0.29,4.47-0.81c-0.45,1.32-0.7,2.72-0.7,4.19c0,7.18,5.82,13,13,13c5.16,0,9.6-3.01,11.7-7.36 			c2.1,4.35,6.54,7.36,11.7,7.36c7.18,0,14.66-6.51,12.95-13.92c2.37,2.49,5.7,4.04,9.41,4.04c7.18,0,13-5.82,13-13 			c0-1.51-0.27-2.95-0.74-4.3c1.07,0.28,2.19,0.45,3.34,0.45c7.18,0,13-5.82,13-13C341.75,225.3,339.24,221.19,335.49,218.91z";
+// const GHOST_SVG_9 =
+//   "M293.34,253.98c-18.84,6.09-39.06-4.25-45.15-23.1s4.25-39.06,23.1-45.15s52.13,0.03,58.22,18.87 			C335.6,223.46,312.19,247.9,293.34,253.98z";
+// const GHOST_SVG_10 =
+//   "M269.55,232.01c-6.09-18.84,4.25-39.06,23.1-45.15c2.74-0.89,5.8-1.51,9.03-1.87 			c-10.53-2.24-21.91-1.98-30.38,0.75c-18.84,6.09-29.19,26.3-23.1,45.15c5.86,18.14,24.8,28.39,43.01,23.71 			C281.28,250.91,273.07,242.88,269.55,232.01z";
+// const GHOST_SVG_11 =
+//   "M516.27,218.26c0-6.97-5.48-12.64-12.37-12.97c2.34-2.35,3.79-5.59,3.79-9.17c0-7.18-5.82-13-13-13 			c-2.68,0-5.18,0.81-7.25,2.21c1.2-11.41-5.46-15.99-12.64-15.99c-4.77,0-8.93,2.58-11.19,6.41c-1.92-4.77-6.59-8.15-12.05-8.15 			c-6.62,0-12.07,4.95-12.88,11.36c-2.38-2.96-6.03-4.86-10.12-4.86c-7.18,0-13,5.82-13,13c0,2.43,0.68,4.7,1.84,6.64 			c-9.89-0.86-14.84,5.67-14.84,12.85c0,5.72,3.7,10.57,8.84,12.31c-3.75,2.28-6.26,6.39-6.26,11.1c0,7.18,5.82,13,13,13 			c1.16,0,2.28-0.17,3.34-0.45c-0.47,1.35-0.74,2.79-0.74,4.3c0,7.18,5.82,13,13,13c3.7,0,7.04-1.56,9.41-4.04 			c-0.88,8.52,5.77,13.92,12.95,13.92c5.16,0,9.6-3.01,11.7-7.36c2.1,4.35,6.54,7.36,11.7,7.36c7.18,0,15.67-8.31,12.3-17.18 			c1.4,0.51,2.9,0.81,4.47,0.81c7.18,0,13-5.82,13-13c0-3.64-1.5-6.92-3.91-9.28C511.53,230.08,516.27,224.73,516.27,218.26z";
+// const GHOST_SVG_12 =
+//   "M453.54,253.98c18.84,6.09,39.06-4.25,45.15-23.1c6.09-18.84-4.25-39.06-23.1-45.15s-52.13,0.03-58.22,18.87 			C411.28,223.46,434.69,247.9,453.54,253.98z";
+// const GHOST_SVG_13 =
+//   "M441.04,205.74c3.78-11.7,18.04-18.49,32.82-20.5c-19.08-5.2-50.59,1.1-56.5,19.38 			c-6.09,18.84,17.33,43.28,36.17,49.37c7.18,2.32,14.55,2.25,21.27,0.24C456.44,246.95,435.21,223.79,441.04,205.74z";
+// const GHOST_SVG_14 =
+//   "M318.85,58.23c-1.01,11.58,9.48,24.71,31.36,15.64c-41.83,17.33,1.84,60.99,19.16,19.16 			c-17.33,41.83,44.43,41.83,27.1,0c17.33,41.83,60.99-1.84,19.16-19.16c21.88,9.06,32.25-2.79,31.24-14.36 			c-19.56-10.18-41-15.41-63.95-15.41C359.97,44.1,337.96,49.99,318.85,58.23z";
+// const GHOST_SVG_15 =
+//   "M364.83,45.21c-3.42,4.09-5.48,9.36-5.48,15.11c0,13.02,10.56,23.58,23.58,23.58s23.58-10.56,23.58-23.58 			c0-5.75-2.06-11.02-5.48-15.11c-5.93-0.73-11.97-1.11-18.1-1.11C376.8,44.1,370.76,44.48,364.83,45.21z";
+
+
+// const GHOST_SVG_1 = "M361.646,268.073c26.798,0.879,54.756,5.479,81.323,16.943 		c4.204,1.813,6.768,0.293,7.552-4.599c2.253-14.063,3.775-28.282,6.769-42.186c13.019-60.456,45.939-106.285,102.356-132.938 		c63.881-30.18,144.639-8.363,184.539,48.412c13.074,18.604,19.98,39.619,24.051,61.69c3.908,21.188,5.034,42.646,5.623,64.141 		c0.163,5.911,2.619,7.347,7.984,5.021c18.358-7.961,37.68-12.26,57.443-14.736c18.595-2.33,37.23-2.926,55.588,1.461 		c7.392,1.766,14.761,4.367,21.544,7.773c14.433,7.248,23.745,19.081,26.791,35.035c4.582,23.996,8.63,48.094,12.796,72.168 		c0.364,2.104,0.159,4.385-0.195,6.516c-1.005,6.049-5.21,9.105-11.255,8.305c-4.697-0.621-8.651-2.805-11.101-6.85 		c-2.708-4.475-5.08-9.174-7.312-13.911c-2.461-5.225-5.31-9.932-11.444-11.314c-11.028-2.484-23.008,9.475-20.408,20.659 		c0.953,4.1,3.182,7.887,4.587,11.902c0.65,1.861,0.723,3.928,1.058,5.898c-2.003-0.178-4.104-0.023-5.99-0.588 		c-6.406-1.924-10.812-6.281-13.119-12.441c-2.42-6.449-4.376-13.075-6.482-19.641c-2.13-6.639-4.751-13.045-10.011-17.863 		c-6.607-6.055-14.367-7.755-22.883-4.918c-6.458,2.152-10.096,7.443-10.161,14.234c-0.022,2.408,0.188,4.818,0.277,7.227 		c0.198,5.377-2.19,8.082-7.572,8.764c-4.936,0.625-9.073-1.314-12.824-4.107c-4.657-3.469-9.056-7.277-13.672-10.801 		c-4.404-3.365-9.378-5.178-15.017-4.764c-3.896,0.285-5.646,2.371-5.329,6.303c5.65,70.104,15.383,139.629,29.886,208.459 		c4.019,19.08,8.703,38.02,12.773,57.086c2.979,13.953,3.703,28.064,0.203,42.049c-4.202,16.799-17.209,26.207-34.079,23.871 		c-6.446-0.893-12.901-3.543-18.753-6.555c-13.224-6.807-23.649-17.246-33.929-27.805c-11.296-11.602-23.504-22.066-38.473-28.783 		c-19.239-8.631-36.237-6.018-50.807,8.268c-4.108,4.029-7.552,8.828-10.831,13.594c-5.091,7.4-9.467,15.303-14.754,22.549 		c-3.174,4.352-7.048,8.498-11.413,11.604c-7.515,5.346-15.707,4.924-23.449,0.004c-8.42-5.352-13.23-13.645-16.966-22.502 		c-3.613-8.566-6.354-17.506-9.996-26.061c-2.303-5.406-5.061-10.764-8.476-15.523c-11.226-15.643-28.81-20.709-46.884-14.047 		c-9.922,3.658-18.758,9.225-26.295,16.484c-8.035,7.738-15.486,16.094-23.035,24.324c-9.001,9.814-18.344,19.18-30.264,25.508 		c-7.784,4.137-15.988,6.137-24.721,4.012c-2.441-0.594-4.975-1.865-6.862-3.516c-15.364-13.438-23.552-30.771-26.815-50.637 		c-3.413-20.77-1.208-41.301,2.928-61.719c10.134-50.039,25.128-98.717,41.225-147.084c3.842-11.539,7.66-23.088,11.482-34.633 		c1.658-5.006-0.465-7.184-5.787-7.061c-5.414,0.125-10.924-0.166-16.249-1.094c-4.348-0.76-4.847-2.137-4.646-6.527 		c0.045-0.982,0.134-1.969,0.229-2.949c1.284-13.033-7.794-21.375-20.737-19.191c-7.825,1.32-13.777,5.465-17.187,12.408 		c-2.971,6.051-4.932,12.602-7.256,18.961c-1.467,4.01-2.598,8.149-4.207,12.096c-2.892,7.082-8.172,11.531-15.682,13.193 		c-3.551,0.785-4.623-0.309-3.359-3.74c1.547-4.203,3.764-8.18,5.105-12.438c3.758-11.918-8.26-25.219-20.106-22.438 		c-5.847,1.371-8.7,5.791-11.102,10.799c-2.36,4.92-4.729,9.874-7.594,14.502c-3.321,5.371-10.159,7.871-15.734,6.365 		c-3.222-0.873-5.698-2.812-6.146-6.137c-0.494-3.648-0.887-7.492-0.278-11.074c3.837-22.577,7.909-45.114,12.013-67.644 		c3.223-17.696,13.385-30.185,29.351-38.036C325.317,270.02,342.375,268.251,361.646,268.073z";
+
+// const GHOST_SVG_2 = "M726.305,167.558c8.863,6.785,13.051,16.202,9.352,21.041c-3.702,4.834-13.889,3.254-22.754-3.533 		c-8.862-6.783-13.05-16.202-9.353-21.036C707.254,159.192,717.438,160.771,726.305,167.558z";
+
+// const GHOST_SVG_3 = "M629.276,200.792c0.428,11.154-4.155,20.385-10.243,20.62c-6.083,0.231-11.365-8.621-11.79-19.779 		c-0.428-11.153,4.157-20.384,10.238-20.618C623.572,180.783,628.851,189.636,629.276,200.792z";
+
+// const GHOST_SVG_4 = "M699.863,113.34c-4.021-3.648-8.44-6.242-12.678-7.699c-11.795-8.458-37.558-14.326-67.462-14.326 		c-30.553,0-56.788,6.126-68.213,14.88c-3.472,1.437-7.063,3.568-10.471,6.343c-10.812,8.804-15.681,20.714-10.885,26.612 		c4.804,5.894,17.456,3.539,28.265-5.263c0.791-0.643,1.538-1.307,2.264-1.979c-0.202,0.307-0.412,0.599-0.609,0.912 		c-7.971,12.684-8.832,26.49-1.912,30.844c6.922,4.346,18.992-2.41,26.966-15.094c1.333-2.121,2.45-4.272,3.382-6.407 		c-0.262,0.706-0.523,1.415-0.76,2.146c-4.849,14.987-2.152,29.273,6.016,31.921c8.175,2.644,18.729-7.357,23.575-22.339 		c0.611-1.884,1.102-3.757,1.477-5.596c0.017,1.563,0.082,3.152,0.246,4.771c1.624,16.295,10.146,28.781,19.026,27.901 		c8.891-0.887,14.774-14.812,13.153-31.102c-0.396-3.993-1.213-7.752-2.343-11.147c0.139-0.021,0.273-0.042,0.41-0.062 		c0.586,4.346,2.184,9.098,4.813,13.708c6.912,12.106,18.286,18.626,25.399,14.567c7.124-4.069,7.292-17.171,0.383-29.279 		c-0.546-0.957-1.128-1.866-1.726-2.75c0.374,0.366,0.74,0.735,1.132,1.092c10.327,9.367,23.296,11.888,28.971,5.632 		C713.959,135.37,710.189,122.707,699.863,113.34z M589.501,139.702c0.133-0.362,0.267-0.724,0.387-1.083l0.082,0.013 		C589.809,138.983,589.656,139.344,589.501,139.702z";
+
+// const GHOST_SVG_5 = "M800.686,637.884c-1.598,2.791-7.038,2.686-12.157-0.242c-0.177-0.102-0.346-0.209-0.518-0.314l0.038,0.08 		c2.354,5.4,1.873,10.826-1.078,12.109c-2.944,1.287-7.246-2.053-9.6-7.457c-0.854-1.965-1.331-3.926-1.456-5.695 		c-0.711,1.287-1.657,2.584-2.83,3.801c-4.089,4.246-9.281,5.881-11.598,3.648c-2.32-2.232-0.88-7.484,3.215-11.729 		c1.181-1.225,2.455-2.227,3.724-2.986c-1.539-0.482-3.159-1.26-4.725-2.33c-4.865-3.326-7.34-8.176-5.525-10.828 		c1.814-2.66,7.231-2.111,12.101,1.213c0.314,0.217,0.617,0.438,0.912,0.664c-0.049-0.283-0.096-0.568-0.133-0.859 		c-0.742-5.854,1.24-10.918,4.433-11.324c3.188-0.404,6.376,4.008,7.119,9.861c0.064,0.502,0.101,0.994,0.125,1.482 		c0.684-1.16,1.56-2.322,2.616-3.418c4.09-4.248,9.285-5.881,11.599-3.652c2.315,2.234,0.879,7.482-3.213,11.729 		c-1.656,1.717-3.488,2.998-5.239,3.777c1.828,0.287,3.841,0.99,5.811,2.117C799.427,630.462,802.281,635.093,800.686,637.884z 		 M774.453,627.7c0,2.707,2.194,4.902,4.901,4.902s4.901-2.195,4.901-4.902s-2.194-4.902-4.901-4.902S774.453,624.993,774.453,627.7 		z";
+
+// const GHOST_SVG_6 = "M681.858,568.786c-1.598,2.789-7.038,2.684-12.156-0.244c-0.178-0.102-0.346-0.209-0.519-0.314l0.038,0.082 		c2.355,5.4,1.874,10.826-1.077,12.107c-2.945,1.287-7.245-2.051-9.599-7.457c-0.854-1.963-1.332-3.926-1.457-5.693 		c-0.712,1.285-1.658,2.584-2.831,3.799c-4.088,4.248-9.279,5.881-11.597,3.65c-2.32-2.234-0.881-7.486,3.215-11.729 		c1.181-1.227,2.454-2.229,3.725-2.988c-1.54-0.48-3.161-1.26-4.725-2.33c-4.867-3.326-7.341-8.174-5.527-10.828 		c1.815-2.66,7.233-2.111,12.102,1.213c0.314,0.217,0.618,0.438,0.912,0.666c-0.05-0.285-0.096-0.57-0.134-0.861 		c-0.741-5.852,1.242-10.918,4.434-11.324c3.189-0.402,6.376,4.008,7.12,9.863c0.063,0.5,0.1,0.992,0.124,1.482 		c0.685-1.162,1.56-2.324,2.616-3.42c4.089-4.246,9.285-5.879,11.598-3.652c2.316,2.234,0.88,7.482-3.213,11.73 		c-1.654,1.717-3.487,2.998-5.239,3.777c1.828,0.287,3.843,0.99,5.811,2.115C680.602,561.364,683.455,565.995,681.858,568.786z 		 M655.626,558.601c0,2.709,2.195,4.904,4.901,4.904c2.708,0,4.902-2.195,4.902-4.904c0-2.707-2.194-4.9-4.902-4.9 		C657.821,553.7,655.626,555.894,655.626,558.601z";
+
+// const GHOST_SVG_7 = "M745.758,490.671c-1.599,2.791-7.038,2.684-12.157-0.244c-0.178-0.1-0.346-0.209-0.518-0.314l0.038,0.08 		c2.354,5.402,1.872,10.828-1.078,12.111c-2.945,1.285-7.245-2.053-9.6-7.459c-0.854-1.963-1.331-3.926-1.457-5.693 		c-0.711,1.285-1.657,2.584-2.829,3.799c-4.09,4.248-9.281,5.883-11.599,3.65c-2.318-2.232-0.88-7.486,3.216-11.729 		c1.182-1.227,2.455-2.229,3.725-2.988c-1.54-0.48-3.161-1.26-4.725-2.33c-4.867-3.324-7.342-8.174-5.527-10.828 		c1.815-2.658,7.232-2.109,12.101,1.215c0.315,0.215,0.619,0.438,0.913,0.664c-0.049-0.283-0.097-0.568-0.133-0.859 		c-0.742-5.854,1.24-10.92,4.434-11.324c3.188-0.404,6.375,4.008,7.119,9.859c0.063,0.502,0.101,0.994,0.123,1.484 		c0.686-1.162,1.56-2.324,2.617-3.42c4.09-4.246,9.284-5.879,11.598-3.65c2.317,2.232,0.879,7.48-3.213,11.729 		c-1.654,1.717-3.487,2.996-5.238,3.777c1.827,0.287,3.842,0.99,5.81,2.115C744.5,483.249,747.353,487.88,745.758,490.671z 		 M719.524,480.487c0,2.705,2.195,4.9,4.902,4.9c2.706,0,4.901-2.195,4.901-4.9c0-2.709-2.195-4.902-4.901-4.902 		C721.72,475.585,719.524,477.778,719.524,480.487z";
+
+// const GHOST_SVG_8 = "M589.842,512.763c-1.598,2.791-7.038,2.684-12.157-0.244c-0.178-0.1-0.346-0.207-0.518-0.314l0.038,0.082 		c2.354,5.4,1.873,10.826-1.078,12.109c-2.944,1.285-7.245-2.053-9.6-7.459c-0.854-1.963-1.331-3.926-1.456-5.693 		c-0.712,1.287-1.658,2.584-2.83,3.801c-4.089,4.246-9.28,5.881-11.598,3.648c-2.319-2.232-0.88-7.484,3.216-11.729 		c1.18-1.227,2.453-2.227,3.724-2.986c-1.54-0.482-3.161-1.262-4.726-2.332c-4.866-3.324-7.34-8.174-5.526-10.826 		c1.815-2.66,7.233-2.113,12.101,1.213c0.316,0.215,0.619,0.438,0.913,0.664c-0.048-0.283-0.096-0.568-0.133-0.861 		c-0.742-5.852,1.24-10.918,4.433-11.322c3.189-0.404,6.376,4.006,7.119,9.861c0.064,0.502,0.102,0.994,0.125,1.482 		c0.685-1.16,1.56-2.324,2.617-3.418c4.089-4.248,9.284-5.881,11.597-3.652c2.317,2.232,0.88,7.48-3.213,11.729 		c-1.654,1.717-3.487,2.998-5.238,3.777c1.827,0.287,3.842,0.99,5.811,2.117C588.584,505.341,591.438,509.972,589.842,512.763z 		 M563.609,502.579c0,2.707,2.194,4.902,4.901,4.902s4.901-2.195,4.901-4.902c0-2.709-2.194-4.902-4.901-4.902 		S563.609,499.87,563.609,502.579z";
+
+// const GHOST_SVG_9 = "M521.168,585.626c-1.598,2.793-7.039,2.686-12.158-0.242c-0.177-0.1-0.346-0.209-0.518-0.314l0.038,0.08 		c2.354,5.402,1.874,10.828-1.077,12.111c-2.945,1.283-7.246-2.053-9.6-7.459c-0.855-1.963-1.332-3.926-1.457-5.693 		c-0.711,1.285-1.658,2.584-2.83,3.799c-4.089,4.248-9.28,5.883-11.598,3.648c-2.319-2.23-0.879-7.484,3.215-11.727 		c1.182-1.229,2.455-2.229,3.725-2.988c-1.54-0.482-3.16-1.26-4.725-2.33c-4.867-3.324-7.34-8.174-5.527-10.828 		c1.816-2.658,7.233-2.111,12.102,1.213c0.314,0.217,0.619,0.439,0.912,0.666c-0.049-0.283-0.096-0.568-0.133-0.861 		c-0.742-5.854,1.24-10.92,4.434-11.322c3.189-0.406,6.375,4.006,7.119,9.859c0.063,0.502,0.101,0.994,0.124,1.484 		c0.685-1.162,1.56-2.324,2.616-3.42c4.09-4.246,9.285-5.881,11.598-3.65c2.317,2.23,0.88,7.48-3.213,11.727 		c-1.654,1.719-3.486,2.998-5.238,3.779c1.828,0.285,3.842,0.99,5.811,2.115C519.91,578.206,522.764,582.835,521.168,585.626z 		 M494.935,575.442c0,2.707,2.194,4.902,4.901,4.902s4.902-2.195,4.902-4.902s-2.195-4.902-4.902-4.902 		S494.935,572.735,494.935,575.442z";
+
+// const GHOST_SVG_10 = "M423.412,615.792c-1.598,2.791-7.039,2.686-12.158-0.242c-0.177-0.102-0.346-0.209-0.518-0.316l0.038,0.082 		c2.354,5.4,1.874,10.828-1.077,12.109c-2.945,1.285-7.246-2.051-9.6-7.459c-0.855-1.963-1.331-3.926-1.457-5.693 		c-0.711,1.285-1.658,2.584-2.83,3.801c-4.089,4.246-9.28,5.881-11.598,3.648c-2.319-2.232-0.879-7.484,3.215-11.727 		c1.182-1.229,2.455-2.229,3.725-2.99c-1.54-0.48-3.16-1.26-4.725-2.33c-4.867-3.324-7.34-8.174-5.527-10.826 		c1.816-2.66,7.233-2.111,12.102,1.213c0.315,0.215,0.619,0.438,0.912,0.664c-0.049-0.281-0.096-0.568-0.133-0.859 		c-0.742-5.854,1.24-10.92,4.434-11.324c3.189-0.404,6.375,4.008,7.119,9.861c0.063,0.502,0.101,0.994,0.124,1.482 		c0.685-1.16,1.56-2.322,2.616-3.42c4.09-4.246,9.285-5.879,11.598-3.65c2.317,2.232,0.88,7.482-3.213,11.729 		c-1.654,1.719-3.486,2.998-5.238,3.777c1.828,0.287,3.842,0.99,5.811,2.117C422.154,608.372,425.008,613.001,423.412,615.792z 		 M397.18,605.608c0,2.707,2.193,4.902,4.9,4.902s4.902-2.195,4.902-4.902s-2.195-4.902-4.902-4.902S397.18,602.901,397.18,605.608z";
+
+// const GHOST_SVG_11 = "M475.383,468.577c-1.598,2.793-7.037,2.686-12.156-0.242c-0.178-0.102-0.346-0.207-0.518-0.314l0.037,0.082 		c2.355,5.4,1.873,10.826-1.077,12.109c-2.944,1.285-7.245-2.053-9.6-7.459c-0.854-1.963-1.331-3.926-1.456-5.695 		c-0.711,1.287-1.658,2.586-2.83,3.801c-4.09,4.246-9.281,5.883-11.598,3.65c-2.32-2.234-0.881-7.484,3.215-11.729 		c1.181-1.229,2.455-2.227,3.725-2.988c-1.541-0.48-3.162-1.26-4.725-2.33c-4.867-3.324-7.342-8.174-5.527-10.826 		c1.815-2.66,7.232-2.113,12.102,1.211c0.314,0.217,0.617,0.439,0.912,0.666c-0.049-0.283-0.096-0.568-0.133-0.861 		c-0.742-5.852,1.24-10.918,4.432-11.324c3.189-0.402,6.377,4.008,7.121,9.863c0.062,0.5,0.1,0.994,0.123,1.482 		c0.686-1.162,1.561-2.324,2.617-3.42c4.089-4.246,9.285-5.879,11.598-3.65c2.316,2.232,0.879,7.48-3.213,11.729 		c-1.654,1.717-3.488,2.996-5.239,3.777c1.828,0.285,3.843,0.99,5.811,2.117C474.125,461.157,476.979,465.788,475.383,468.577z 		 M449.15,458.396c0,2.707,2.195,4.9,4.901,4.9c2.708,0,4.902-2.193,4.902-4.9c0-2.709-2.194-4.904-4.902-4.904 		C451.346,453.491,449.15,455.687,449.15,458.396z";
+
+// const GHOST_SVG_12 = "M774.979,541.124c2.702-1.422,6.854,2.902,9.27,9.656c2.417,6.754,2.185,13.379-0.517,14.797 		c-2.703,1.422-6.854-2.898-9.271-9.652C772.044,549.171,772.275,542.546,774.979,541.124z";
+
+// const GHOST_SVG_13 = "M563.849,588.964c2.784-0.965,6.992,3.895,9.4,10.852c2.406,6.957,2.1,13.379-0.685,14.342 		c-2.784,0.961-6.992-3.896-9.399-10.852C560.759,596.347,561.064,589.927,563.849,588.964z";
+
+// const GHOST_SVG_14 = "M416.574,530.384c2.209,2.121,0.629,8.559-3.53,14.383c-4.158,5.824-9.321,8.826-11.53,6.705 		s-0.627-8.561,3.529-14.385C409.203,531.265,414.365,528.261,416.574,530.384z";
+
+// const GHOST_SVG_15 = "M711.824,523.554c3.045-0.219,5.112,5.406,4.616,12.562c-0.497,7.156-3.369,13.131-6.414,13.35 		c-3.046,0.215-5.112-5.408-4.616-12.566C705.907,529.745,708.778,523.769,711.824,523.554z";
+
+// const GHOST_SVG_16 = "M484.772,504.155c3.03-0.336,6.915,5.035,8.681,11.998c1.765,6.959,0.738,12.877-2.293,13.213 		c-3.028,0.336-6.916-5.033-8.678-11.994C480.716,510.409,481.742,504.491,484.772,504.155z";
+
+const GHOST_SVG_1 = "M27.311,315.765c0,0-29.347-302.502,194.145-296.858c0,0,115.131-18.06,167.052,73.367 		c0,0,12.831,22.216,20.207,77.215c1.343,10.006,59.934,384.441,59.934,384.441s10.158,21.446-20.316,33.862l4.514,32.733 		c0,0,3.387,27.09-36.12,36.119c0,0-49.664,3.387-51.92,11.287c0,0-45.927,68.854-116.649,27.091c0,0-30.087-7.901-47.02,1.129 		c0,0-85.784,42.891-108.357-29.349c0,0-63.494,1.129-66.738-30.475C22.796,604.724,27.311,315.765,27.311,315.765z";
+
+const GHOST_SVG_2 = "M67.471,251.857c-1.011,29.993,10.707,54.731,26.175,55.251c9.452,0.32,18.106-8.483,23.643-22.21l0,0l0,0 		c1.275-3.146,2.384-6.546,3.299-10.163l4.489-2.707l-3.558-1.396c1.081-5.299,1.768-10.97,1.966-16.886 		c1.011-29.991-10.708-54.73-26.177-55.25C81.843,197.974,68.485,221.863,67.471,251.857";
+
+const GHOST_SVG_3 = "M258.062,288.533c1.233-3.162,2.304-6.574,3.177-10.203l4.453-2.761l-3.574-1.351 		c1.022-5.314,1.638-10.992,1.766-16.912c0.655-29.998-11.355-54.597-26.831-54.935c-15.474-0.335-28.542,23.713-29.202,53.716 		c-0.651,30.002,11.363,54.598,26.836,54.936C244.134,311.232,252.687,302.327,258.062,288.533L258.062,288.533L258.062,288.533z";
+
+const GHOST_SVG_4 = "M188.193,348.682c0-16.764-13.343-30.35-29.801-30.35c-16.458,0-29.799,13.586-29.799,30.35 		c0,16.762,13.341,30.348,29.799,30.348c9.065,0,17.18-4.127,22.646-10.631l0.174,0.521l1.44-2.112l2.556-0.014l-1.558-2.011 		C186.524,360.115,188.193,354.598,188.193,348.682z";
+
+const GHOST_SVG_5 = "M427.144,470.863c-3.463,6.049-15.261,5.82-26.359-0.527c-0.384-0.217-0.749-0.454-1.122-0.681l0.082,0.176 		c5.103,11.706,4.065,23.472-2.335,26.25c-6.385,2.784-15.71-4.445-20.816-16.17c-1.851-4.254-2.886-8.511-3.158-12.338 		c-1.538,2.779-3.592,5.601-6.134,8.238c-8.868,9.205-20.118,12.75-25.146,7.907c-5.028-4.839-1.904-16.224,6.972-25.426 		c2.564-2.663,5.32-4.83,8.076-6.48c-3.339-1.037-6.851-2.73-10.247-5.051c-10.552-7.205-15.911-17.724-11.979-23.473 		c3.938-5.765,15.679-4.577,26.237,2.633c0.682,0.469,1.34,0.949,1.979,1.439c-0.109-0.609-0.209-1.231-0.289-1.86 		c-1.613-12.698,2.688-23.678,9.611-24.554c6.916-0.878,13.822,8.691,15.434,21.379c0.136,1.09,0.219,2.158,0.27,3.211 		c1.486-2.511,3.379-5.032,5.67-7.413c8.868-9.207,20.132-12.745,25.145-7.911c5.023,4.834,1.908,16.217-6.967,25.428 		c-3.584,3.724-7.556,6.497-11.355,8.188c3.965,0.626,8.331,2.145,12.599,4.592C424.417,454.774,430.603,464.81,427.144,470.863z 		 M370.271,448.782c0,5.869,4.755,10.629,10.623,10.629c5.872,0,10.629-4.76,10.629-10.629c0-5.865-4.757-10.627-10.629-10.627 		C375.026,438.155,370.271,442.917,370.271,448.782z";
+
+const GHOST_SVG_6 = "M133.244,551.409c-3.463,6.05-15.262,5.82-26.359-0.527c-0.384-0.218-0.75-0.454-1.122-0.681l0.081,0.177 		c5.102,11.704,4.065,23.472-2.335,26.25c-6.384,2.784-15.709-4.443-20.816-16.172c-1.851-4.254-2.886-8.511-3.159-12.336 		c-1.538,2.781-3.591,5.601-6.134,8.236c-8.867,9.206-20.117,12.751-25.143,7.907c-5.029-4.835-1.905-16.223,6.97-25.425 		c2.563-2.663,5.322-4.83,8.077-6.48c-3.34-1.037-6.852-2.729-10.247-5.052c-10.553-7.204-15.912-17.723-11.978-23.472 		c3.936-5.766,15.678-4.577,26.235,2.635c0.681,0.467,1.34,0.947,1.978,1.439c-0.108-0.611-0.207-1.234-0.289-1.863 		c-1.613-12.695,2.688-23.677,9.613-24.553c6.914-0.876,13.822,8.69,15.432,21.38c0.138,1.088,0.218,2.156,0.27,3.212 		c1.486-2.512,3.379-5.034,5.67-7.415c8.869-9.207,20.132-12.744,25.146-7.909c5.023,4.833,1.907,16.216-6.967,25.428 		c-3.585,3.723-7.557,6.496-11.356,8.187c3.964,0.626,8.331,2.145,12.599,4.592C130.517,535.322,136.703,545.356,133.244,551.409z 		 M76.372,529.33c0,5.868,4.754,10.626,10.622,10.626c5.872,0,10.628-4.758,10.628-10.626c0-5.867-4.757-10.63-10.628-10.63 		C81.126,518.7,76.372,523.463,76.372,529.33z";
+
+const GHOST_SVG_7 = "M240.345,647.193c-3.464,6.049-15.263,5.82-26.361-0.527c-0.382-0.217-0.748-0.454-1.121-0.681l0.081,0.176 		c5.103,11.706,4.066,23.472-2.334,26.251c-6.385,2.785-15.711-4.443-20.814-16.171c-1.854-4.254-2.887-8.512-3.161-12.338 		c-1.538,2.782-3.59,5.601-6.132,8.238c-8.866,9.205-20.119,12.75-25.146,7.907c-5.029-4.837-1.906-16.224,6.971-25.426 		c2.563-2.663,5.323-4.83,8.078-6.481c-3.34-1.036-6.852-2.729-10.248-5.05c-10.553-7.205-15.912-17.723-11.98-23.472 		c3.939-5.766,15.681-4.576,26.238,2.635c0.681,0.466,1.339,0.947,1.977,1.438c-0.108-0.609-0.207-1.231-0.288-1.86 		c-1.611-12.699,2.687-23.679,9.611-24.555c6.916-0.878,13.821,8.691,15.436,21.38c0.136,1.09,0.217,2.158,0.268,3.21 		c1.486-2.51,3.38-5.031,5.67-7.413c8.871-9.207,20.133-12.745,25.146-7.911c5.025,4.834,1.907,16.218-6.965,25.43 		c-3.587,3.722-7.558,6.496-11.355,8.187c3.964,0.625,8.329,2.146,12.598,4.592C237.618,631.104,243.804,641.141,240.345,647.193z 		 M183.47,625.114c0,5.867,4.756,10.626,10.624,10.626c5.871,0,10.629-4.759,10.629-10.626s-4.758-10.629-10.629-10.629 		C188.227,614.485,183.47,619.247,183.47,625.114z";
+
+const GHOST_SVG_8 = "M401.832,599.299c-3.461,6.05-15.262,5.82-26.358-0.525c-0.384-0.219-0.748-0.455-1.122-0.682l0.081,0.176 		c5.102,11.705,4.065,23.474-2.333,26.251c-6.387,2.784-15.711-4.444-20.816-16.172c-1.854-4.254-2.886-8.511-3.159-12.336 		c-1.54,2.78-3.592,5.599-6.133,8.236c-8.867,9.206-20.12,12.751-25.146,7.908c-5.027-4.837-1.904-16.226,6.971-25.427 		c2.563-2.664,5.323-4.83,8.078-6.481c-3.34-1.036-6.853-2.729-10.246-5.051c-10.555-7.204-15.913-17.722-11.979-23.472 		c3.936-5.765,15.678-4.575,26.235,2.635c0.683,0.467,1.342,0.948,1.978,1.439c-0.108-0.61-0.206-1.232-0.288-1.862 		c-1.612-12.696,2.688-23.677,9.612-24.553c6.915-0.876,13.822,8.69,15.434,21.378c0.137,1.091,0.217,2.158,0.27,3.212 		c1.484-2.511,3.381-5.033,5.67-7.414c8.868-9.206,20.133-12.745,25.146-7.909c5.024,4.832,1.905,16.216-6.967,25.428 		c-3.585,3.723-7.558,6.496-11.355,8.187c3.962,0.625,8.331,2.146,12.598,4.593C399.105,583.21,405.293,593.246,401.832,599.299z 		 M344.96,577.219c0,5.868,4.756,10.628,10.624,10.628c5.871,0,10.627-4.76,10.627-10.628c0-5.867-4.756-10.628-10.627-10.628 		C349.716,566.591,344.96,571.352,344.96,577.219z";
+
 
 //ghost symbol styles
-const GHOST_COLOR_0 = '#E9E9E9';
-const GHOST_COLOR_1 = '#3E3D42';
-const GHOST_COLOR_2 = '#ED539D';
-const GHOST_COLOR_3 = '#424EDE';
-const GHOST_COLOR_4 = '#E23991';
-const GHOST_COLOR_5 = '#FFE477';
-const GHOST_COLOR_6 = '#FF3F62';
-const GHOST_COLOR_7 = '#2D2D30';
-const GHOST_COLOR_8 = '#F23D19';
-const GHOST_SCALE = 0.075;
-const GHOST_ROTATION = [0,180,270,270];
-var GHOST_ANCHOR;
+// const GHOST_COLOR_0 = "#E9E9E9";
+// const GHOST_COLOR_1 = "#3E3D42";
+// const GHOST_COLOR_2 = "#ED539D";
+// const GHOST_COLOR_3 = "#424EDE";
+// const GHOST_COLOR_4 = "#E23991";
+// const GHOST_COLOR_5 = "#FFE477";
+// const GHOST_COLOR_6 = "#FF3F62";
+// const GHOST_COLOR_7 = "#2D2D30";
+// const GHOST_COLOR_8 = "#F23D19";
 
+// const GHOST_COLOR_1 = "#E9E9E9";
+// const GHOST_COLOR_2 = "#32C2F2";
+// const GHOST_COLOR_3 = "#DD5DA2";
+// const GHOST_COLOR_4 = "#7554A3";
+// const GHOST_COLOR_5 = "#F89A2C";
+// const GHOST_COLOR_6 = "#F89A2C";
+// const GHOST_COLOR_7 = "#F89A2C";
+// const GHOST_COLOR_8 = "#F89A2C";
+// const GHOST_COLOR_9 = "#F89A2C";
+// const GHOST_COLOR_10 = "#F89A2C";
+// const GHOST_COLOR_11 = "#F89A2C";
+// const GHOST_COLOR_12 = "#DD5DA2";
+// const GHOST_COLOR_13 = "#DD5DA2";
+// const GHOST_COLOR_14 = "#6BBE46";
+// const GHOST_COLOR_15 = "#32C2F2";
+// const GHOST_COLOR_16 = "#32C2F2";
+
+const GHOST_COLOR_1 = "#FFFFFF";
+const GHOST_COLOR_2 = "#231F20";
+const GHOST_COLOR_3 = "#231F20";
+const GHOST_COLOR_4 = "#231F20";
+const GHOST_COLOR_5 = "#F89A2E";
+const GHOST_COLOR_6 = "#F89A2E";
+const GHOST_COLOR_7 = "#F89A2E";
+const GHOST_COLOR_8 = "#F89A2E";
+
+
+
+// const GHOST_SCALE = 0.075;
+const GHOST_SCALE = 0.100;
+const GHOST_ROTATION = [270, 180, 270, 270];
+let GHOST_ANCHOR;
+let GHOST_ORIGIN;
 
 /*******************************
  messages
 ********************************/
 const HELP_INFO = {
-  help:'',
-}
+  help: "",
+};
 
 /*******************************
  ready
 ********************************/
-$( document ).ready(function() {
-
-
+$(document).ready(function () {
   //Mensajes de ayuda
-    $("[data-toggle=popover]").each(function () {
-        $(this).popover({
-            title: HELP_INFO['titulo'],
-            content: HELP_INFO[$(this).attr('data-info')],
-            trigger: 'hover',
-            html:true
-        });
+  $("[data-toggle=popover]").each(function () {
+    $(this).popover({
+      title: HELP_INFO["titulo"],
+      content: HELP_INFO[$(this).attr("data-info")],
+      trigger: "hover",
+      html: true,
     });
+  });
 
-    //closeSideBar
-    //closeMapSidebar();
+  //closeSideBar
+  //closeLeftMapSidebar();
 
-    //Floating
-    $('#uxmap_controls').affix({
-        offset: {
-            top: $('#uxmap_controls').offset().top - 20
-        }
-    });
+  //lang_selected
+  let lang_selected = $("#lang_selected").val();
+  $("#lang_selected_" + lang_selected).addClass("active btn-info");
 
-	  //Tooltips
-    $('.layer-tooltip').tooltip();
+  //locale
+  moment.locale($("#lang_selected").val()); //Multilanguaje
 
+  //example
+  //let txt = ($('#lang_selected').val()==='es')?'Hola':'Hello';
 
-    //Disclaimer
-    if(showDisclaimer)
-      $('#modal_disclaimer_info').modal('show');
+  //Floating
+  // $('#uxmap_controls').affix({
+  //     offset: {
+  //         top: $('#uxmap_controls').offset().top - 20
+  //     }
+  // });
 
-    //activate map
-    $('#activate_map').click(function(e){
-      e.preventDefault();
+  //Tooltips
+  $(".layer-tooltip").tooltip();
 
-      mapModeON = true;
-      activateMap(mapModeON);
-    });
+  //Disclaimer
+  if (showDisclaimer) $("#modal_disclaimer_info").modal("show");
 
+  //activate map
+  $("#activate_map").click(function (e) {
+    e.preventDefault();
 
-    /*Traffic Layer*/
-    $('#uxmap_c_traffic_layer').click(function(){
+    mapModeON = true;
+    activateMap(mapModeON);
+  });
 
-      var layer_ = layers['traffic'];
+  /*Traffic Layer*/
+  $("#uxmap_c_traffic_layer").click(function () {
+    let layer_ = layers["traffic"];
 
-      if(layer_){
-        layer_.status = !layer_.status;
-        toggleLayer(layer_.layer, layer_.status, '#'+$(this).attr('id'));
+    if (layer_) {
+      layer_.status = !layer_.status;
+      toggleLayer(layer_.layer, layer_.status, "#" + $(this).attr("id"));
+    }
+  });
 
-      }
-    });
+  /*Activate/deactivate layer*/
+  $(".uxmap_c_layer").click(function () {
+    let layer_id = $(this).attr("uxmap-layer");
+    let layer_ = layers[layer_id];
 
+    if (layer_) {
+      layer_.status = !layer_.status;
+      let $id = "#" + $(this).attr("id");
+      toggleLayer(layer_.layer, layer_.status, $id);
+      toggleLayerBtn(layer_.status, "_p" + $id);
 
-    //activate map
-    $('#activate_map, #activate_map_ghost').click(function(e){
-      e.preventDefault();
-      setMapStyle('map_style_night.json');
+      //apply filter
+      //doFilter();
+    }
+  });
 
-      mapModeON = true;
-      activateMap(mapModeON);
-    });
+  /*Activate/deactivate layer*/
+  $(".p_uxmap_c_layer").click(function () {
+    let layer_id = $(this).attr("uxmap-layer");
+    let layer_ = layers[layer_id];
 
+    if (layer_) {
+      layer_.status = !layer_.status;
+      let $id = "#" + $(this).attr("id");
+      toggleLayer(layer_.layer, layer_.status, $id);
+      toggleLayerBtn(layer_.status, $id.replace("p_uxmap", "uxmap"));
 
-    //uxmap controls - deactivate
-    $('#uxmap_c_deactivate_map').click(function(e){
-      e.preventDefault();
-      setMapStyle('map_style_day.json');
+      //apply filter
+      //doFilter();
+    }
+  });
 
-      mapModeON = false;
-      activateMap(mapModeON);
-    });
+  //reload
+  $("#uxmap_c_layer_reload").click(function () {
+    currentLat = map.getCenter().lat();
+    currentLng = map.getCenter().lng();
+  });
 
+  //activate map
+  $('#activate_map, #activate_map_ghost').click(function(e){
+    e.preventDefault();
+    setMapStyle('map_style_night.json');
 
-	  /*Activate/deactivate layer*/
-    $('.uxmap_c_layer').click(function(){
-      var layer_id = $(this).attr('uxmap-layer');
-      var layer_ = layers[layer_id];
+    mapModeON = true;
+    activateMap(mapModeON);
+  });
 
-      if(layer_){
-        layer_.status = !layer_.status;
-        toggleLayer(layer_.layer, layer_.status, '#'+$(this).attr('id'));
+  //uxmap controls - deactivate
+  $("#uxmap_c_deactivate_map").click(function (e) {
+    e.preventDefault();
+    setMapStyle("map_style_day.json?v="+moment.now().toString());
 
-        //apply filter
-        //doFilter();
-      }
-    });
+    mapModeON = false;
+    activateMap(mapModeON);
+  });
 
-	  //reload
-	  $('#uxmap_c_layer_reload').click(function(){
+  //uxmap controls - geolocation
+  $("#uxmap_c_geolocation").click(function (e) {
+    e.preventDefault();
 
-      currentLat = map.getCenter().lat()
-      currentLng = map.getCenter().lng();
-
-  	});
-
-
-    //uxmap controls - deactivate
-    $('#uxmap_c_deactivate_map').click(function(e){
-      e.preventDefault();
-      setMapStyle('map_style_day.json');
-
-      mapModeON = false;
-      activateMap(mapModeON);
-    });
-
-
-    //uxmap controls - geolocation
-    $('#uxmap_c_geolocation').click(function(e){
-      e.preventDefault();
-
-      if (html5GeolocationEnabled && navigator.geolocation) {
-		      navigator.geolocation.getCurrentPosition(function(position) {
-
-		      currentLat = position.coords.latitude;
+    if (html5GeolocationEnabled && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          currentLat = position.coords.latitude;
           currentLng = position.coords.longitude;
 
-          var pos = {
+          let pos = {
             lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lng: position.coords.longitude,
           };
 
           map.setCenter(pos);
           map.setZoom(geolocationZoom);
 
           //init marker / reload
-
-
-
-        }, function() {
+        },
+        function () {
           handleLocationError(true, infowindow, map.getCenter());
-        });
-      } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infowindow, map.getCenter());
-      }
-    });
-
-
-    //uxmap controls - audio
-    $('#uxmap_c_sound_map').click(function(e){
-      e.preventDefault();
-
-      soundEnabled = !soundEnabled;
-
-      enableAudio(true);
-
-    });
-
-
-    //uxmap controls - exit streetview
-    $('.uxmap_c_exit_street_view').click(function(e){
-      e.preventDefault();
-      map.getStreetView().setVisible(false);
-    });
-
-
-    //audio
-    //initAudio();
-
-    //detect first user interaction (audio.play)
-    window.addEventListener("click", () => {
-      if(!firstUserInteracion){firstUserInteracion=true; if(mapModeON) initAudio('background_sound',true); }
-    });
-    window.addEventListener("toogle", () => {
-      if(!firstUserInteracion){firstUserInteracion=true; if(mapModeON) initAudio('background_sound',true);}
-    });
-
-    window.addEventListener("scroll", () => {
-      if(!firstUserInteracion){firstUserInteracion=true; if(mapModeON) initAudio('background_sound',true);}
-    });
-
-    //init Controls
-    initControls();
-
-	  hideCollapsibleFooterDialog();
-	  
-    $('#collapsible_footer_dialog_header .panel-title').click(function(){
-        $('#collapsible_footer_dialog_collapse').click(); //haciendo click en el titulo se colapsa
-    });
-    $('#collapsible_footer_dialog_btn').click(function(){
-      $('#collapsible_footer_dialog_collapse').click(); //haciendo click en el titulo se colapsa
-	});
-
-
-    // DIALOG EVENTS
-    /*on modal shown*/
-    $('#modal_map_').on('shown.bs.modal', function () {
-
-    })
-    /*on modal hide*/
-    $('#modal_map_').on('hide.bs.modal', function () {
-
-    })
-
-
-    //FILTER EVENTS
-
-    //filtrar
-    $('#do_filter').on('click',function(e){
-        doFilter();
-    });
-
-
-
-    //NAVIGATION
-    $('#modal_map_leyenda_prev,#modal_map_leyenda_next').click(function(e){
-      e.preventDefault();
-      goToLeyenda($(this).attr('href'));
-    });
-
-
-    //BUILD SHARE LINK
-    $('.modal_map_leyenda_share').click(function(e){
-      let $id = $(this).attr('href');
-      let leyenda = searchLeyenda($id);
-
-      if(leyenda){
-        var shareURL = location.protocol + '//' + location.host + location.pathname;
-
-        shareURL+= '?cvegeo=' + CVEGEO;
-        shareURL+= '&l=' + $id;
-
-        //btn share
-        $('#modal_map_leyenda_share_url').attr('href',shareURL);
-        $('#share_url').html(shareURL);
-
-        //iframe
-        shareURL = shareURL.replace(/\&/g,'{{ast}}'); /*{{ast}} is n identifier */
-        var iframeShareURL= '<iframe src="share_custom_leyenda.html?shareURL='+shareURL+'&title='+leyenda.titulo+'" width="100%" height="60" style="border:none;"></iframe>';
-        
-        $('#leyenda_for_iframe_container').html(iframeShareURL);
         }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infowindow, map.getCenter());
+    }
+  });
 
-        //show
-        $('#modal_map_leyenda_share_block').show();
-        
+  //uxmap controls - audio
+  $("#uxmap_c_sound_map").click(function (e) {
+    e.preventDefault();
 
-        //hide
-        $('#modal_map_leyenda_multimedia').hide();
-        $('#modal_map_leyenda_text').hide();
-    });
+    soundEnabled = !soundEnabled;
 
-    //COPY TO CLIPBOARD
-    $('#share_url_clipboard').click(function(e){
-      e.preventDefault();
-      
-      let copiedText = $('#share_url').html();
+    enableAudio(true);
+  });
 
-      $('#share_url').select();
-      document.execCommand("copy");
+  //uxmap controls - exit streetview
+  $(".uxmap_c_exit_street_view").click(function (e) {
+    e.preventDefault();
+    map.getStreetView().setVisible(false);
+  });
 
-      if(copiedText){
+  //audio
+  //initAudio();
 
-        new PNotify({
-          title: 'Portapapeles',
-          text: 'El enlace ha sido copiado al portapapeles',
-          icon: 'icon-checkmark3',
-          addclass: 'bg-success',
-          buttons: {
-            closer: true,
-            sticker: false
-        }
+  //detect first user interaction (audio.play)
+  window.addEventListener("click", () => {
+    if (!firstUserInteracion) {
+      firstUserInteracion = true;
+      if (mapModeON) initAudio("music", true);
+    }
+  });
+  window.addEventListener("toogle", () => {
+    if (!firstUserInteracion) {
+      firstUserInteracion = true;
+      if (mapModeON) initAudio("music", true);
+    }
+  });
+
+  window.addEventListener("scroll", () => {
+    if (!firstUserInteracion) {
+      firstUserInteracion = true;
+      if (mapModeON) initAudio("music", true);
+    }
+  });
+
+  //init Controls
+  initControls();
+
+  //Determina cuando se esconde el dialogo de footer
+  hideFooterDialog();
+
+  $("#footer_dialog_header .card-title").click(function () {
+    $("#footer_dialog_collapse").click(); //haciendo click en el titulo se colapsa
+  });
+
+  $("#footer_dialog_btn").click(function () {
+    $("#footer_dialog_collapse").click(); //haciendo click en el boton se colapsa
+  });
+
+  // DIALOG EVENTS
+  /*on modal shown*/
+  $("#modal_map_").on("shown.bs.modal", function () {});
+  /*on modal hide*/
+  $("#modal_map_").on("hide.bs.modal", function () {});
+
+  //FILTER EVENTS
+
+  //filtrar
+  $("#do_filter").on("click", function (e) {
+    doFilter();
+  });
+
+  //i18n
+  $("#lang_selected_en").on("click", function (e) {
+    e.preventDefault();
+    let urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("lang", "en");
+
+    let shareURL =
+      location.protocol +
+      "//" +
+      location.host +
+      location.pathname +
+      "?" +
+      urlParams.toString();
+    window.location = shareURL;
+  });
+
+  $("#lang_selected_es").on("click", function (e) {
+    e.preventDefault();
+    let urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("lang", "es");
+
+    let shareURL =
+      location.protocol +
+      "//" +
+      location.host +
+      location.pathname +
+      "?" +
+      urlParams.toString();
+    window.location = shareURL;
+  });
+
+  //STORY NAVIGATION
+  $("#modal_map_leyenda_prev,#modal_map_leyenda_next").click(function (e) {
+    e.preventDefault();
+    goToLeyenda($(this).attr("href"));
+  });
+
+  //BUILD SHARE LINK
+  $(".modal_map_leyenda_share").click(function (e) {
+    let $id = $(this).attr("href");
+    let leyenda = searchLeyenda($id);
+
+    if (leyenda) {
+      let shareURL =
+        location.protocol + "//" + location.host + location.pathname;
+
+      shareURL += "?cvegeo=" + CVEGEO;
+      shareURL += "&l=" + $id;
+
+      //btn share
+      $("#modal_map_leyenda_share_url").attr("href", shareURL);
+      $("#share_url").html(shareURL);
+
+      //iframe
+      shareURL = shareURL.replace(
+        /\&/g,
+        "{{ast}}"
+      ); /*{{ast}} is n identifier */
+      let iframeShareURL =
+        '<iframe src="share_custom_leyenda.html?shareURL=' +
+        shareURL +
+        "&title=" +
+        leyenda.titulo +
+        '" width="100%" height="60" style="border:none;"></iframe>';
+
+      $("#leyenda_for_iframe_container").html(iframeShareURL);
+    }
+
+    //show
+    $("#modal_map_leyenda_share_block").show();
+
+    //hide
+    $("#modal_map_leyenda_multimedia").hide();
+    $("#modal_map_leyenda_text").hide();
+  });
+
+  //COPY TO CLIPBOARD
+  $("#share_url_clipboard").click(function (e) {
+    e.preventDefault();
+
+    let copiedText = $("#share_url").html();
+
+    $("#share_url").select();
+    document.execCommand("copy");
+
+    if (copiedText) {
+      new PNotify({
+        title: "Portapapeles",
+        text: "El enlace ha sido copiado al portapapeles",
+        icon: "icon-checkmark3",
+        addclass: "bg-success",
+        buttons: {
+          closer: true,
+          sticker: false,
+        },
       });
-      }
-        
-    });
-
+    }
+  });
 });
 
+function initControls() {
+  //initWizard();
 
-function initControls(){
+  //QueryParams
+  let urlParams = new URLSearchParams(window.location.search);
+  let aParam_ = urlParams.get("myParam");
 
-    //initWizard();
+  // select
+  // $('.select2').select2({
+  //   minimumResultsForSearch: -1
+  // });
 
-    // select
-    $('.select2').select2({
-      minimumResultsForSearch: -1
-    });
+  // //multiselect
+  // $('.multiselect').multiselect();
 
-	  //multiselect
-    $('.multiselect').multiselect();
+  // // Styled checkboxes and radios
+  // $('.styled').uniform();
+} //initControls
 
-    // Styled checkboxes and radios
-    $('.styled').uniform();
+/*Slider Aux*/
+let lang = "es-MX";
+function dateToTS(date) {
+  return date.valueOf();
+}
 
-}//initControls
+function tsToDate(ts) {
+  let d = new Date(ts);
 
+  return d.toLocaleDateString(lang, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+}
 
-
-
-function initWizard(){
-
-}//initWizard
-
+function initWizard() {} //initWizard
 
 /*
   id_ - sounds[]
   loop - audio objet
   delay - in ms
 */
-function initAudio(id_ , loop, delay=10, callback){
+function initAudio(id_, loop, delay = 10, callback) {
   //audio
-  var sound = sounds[id_]
+  let sound = sounds[id_];
 
-  if(sound){
-    if(loop){
-
-      setTimeout(function() {
-        audio_loop =  document.getElementById("audio_loop");
+  if (sound) {
+    if (loop) {
+      setTimeout(function () {
+        audio_loop = document.getElementById("audio_loop");
         audio_loop.src = sound.file;
         audio_loop.volume = sound.volume;
         audio_loop.play();
 
-        if(callback)
-           callback();
+        if (callback) callback();
       }, delay);
-
-
-    }else{
-
-      setTimeout(function() {
-        audio =  document.getElementById("audio");
+    } else {
+      setTimeout(function () {
+        audio = document.getElementById("audio");
         audio.src = sound.file;
         audio.volume = sound.volume;
         audio.play();
-        if(callback)
-           callback();
+        if (callback) callback();
       }, delay);
-
     }
 
     soundEnabled = true;
-    enableAudio(true);
+    enableAudio();
   }
-}//initAudio
-
+} //initAudio
 
 /*
   id_ - sounds[]
   loop - audio objet
   delay - in ms
 */
-function stopAudio(loop, delay=10){
+function stopAudio(loop, delay = 10) {
   //audio
 
-    if(loop){
-      setTimeout(function() {
-        audio_loop =  document.getElementById("audio_loop");
-        audio_loop.pause();
-      }, delay);
+  if (loop) {
+    setTimeout(function () {
+      audio_loop = document.getElementById("audio_loop");
+      audio_loop.pause();
+    }, delay);
+  } else {
+    setTimeout(function () {
+      audio = document.getElementById("audio");
+      audio.pause();
+    }, delay);
+  }
+} //initAudio
 
+function enableAudio(loop) {
+  if (!mapModeON)
+    if (loop)
+      if (audio_loop) audio_loop.pause();
+      else if (audio) audio.pause();
 
-    }else{
-      setTimeout(function() {
-        audio =  document.getElementById("audio");
-        audio.pause();
-      }, delay);
-
+  if (firstUserInteracion && mapModeON)
+    if (soundEnabled) {
+      $("#uxmap_c_sound_map_icon").addClass(AUDIO_ON_CLASS);
+      $("#uxmap_c_sound_map_icon").removeClass(AUDIO_OFF_CLASS);
+      if (loop)
+        if (audio_loop) audio_loop.play();
+        else if (audio) audio.play();
+    } else {
+      $("#uxmap_c_sound_map_icon").removeClass(AUDIO_ON_CLASS);
+      $("#uxmap_c_sound_map_icon").addClass(AUDIO_OFF_CLASS);
+      if (loop)
+        if (audio_loop) audio_loop.pause();
+        else if (audio) audio.pause();
     }
-}//initAudio
-
-function enableAudio(loop){
-
-    if(!mapModeON)
-      if(loop)
-        if(audio_loop)audio_loop.pause();
-      else
-        if(audio)audio.pause();
-  
-    if(firstUserInteracion && mapModeON)
-      if(soundEnabled){
-        $('#uxmap_c_sound_map_icon').addClass(AUDIO_ON_CLASS);
-        $('#uxmap_c_sound_map_icon').removeClass(AUDIO_OFF_CLASS);
-        if(loop)
-          if(audio_loop)audio_loop.play();
-        else
-          if(audio)audio.play();
-        }
-  
-      else{
-        $('#uxmap_c_sound_map_icon').removeClass(AUDIO_ON_CLASS);
-        $('#uxmap_c_sound_map_icon').addClass(AUDIO_OFF_CLASS);
-        if(loop)
-          if(audio_loop)audio_loop.pause();
-        else
-          if(audio)audio.pause();
-      }
-  
 }
-
 
 /*******************************
  init google maps
 ********************************/
-function initMap(){
-  $.get( defineMapStyle(), function( data ) {
+function initMap() {
+  $.get(defineMapStyle(), function (data) {
     if (data) {
-        let mapStyle = data;
+      let mapStyle = data;
+
+      /*--------------------------------------------*/
+      // QUERY PARAMS
+      /*--------------------------------------------*/
+      let urlParams = new URLSearchParams(window.location.search);
+      CVEGEO = urlParams.get("cvegeo");
+      INIT_LEYENDA = urlParams.get("l");
+
+      /* Valores de la Entidad */
+      let entidad = searchEntidad(CVEGEO);
+      if (entidad) {
+        ENTIDAD = entidad.title;
+        LEYENDAS_INFO_PATH = "/data/" + CVEGEO + "/" + LEYENDAS_INFO_PATH;
+
+        initLat = entidad.lat;
+        initLng = entidad.lng;
+        currentLat = entidad.lat;
+        currentLng = entidad.lng;
+
+        initZoom = entidad.zoom;
+        finalZoom = entidad.zoom;
+      }
+
+      /*--------------------------------------------*/
+      // init map
+      /*--------------------------------------------*/
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: new google.maps.LatLng(initLat, initLng),
+        restriction: gmap_restriction,
+
+        styles: mapStyle,
+        mapTypeId: gmap_mapTypeId,
+        backgroundColor: gmap_backgroundColor,
+
+        zoom: initZoom,
+        maxZoom: gmap_maxZoom,
+        minZoom: gmap_minZoom,
+
+        mapTypeControl: gmap_mapTypeControl,
+        fullscreenControl: gmap_fullscreenControl,
+        zoomControl: gmap_zoomControl,
+        streetViewControl: gmap_streetViewControl,
+        gestureHandling: "greedy" /*Important to navigate on mobile */,
 
 
-        /*--------------------------------------------*/
-        // QUERY PARAMS
-        /*--------------------------------------------*/
-        var urlParams = new URLSearchParams(window.location.search);
-        CVEGEO = urlParams.get('cvegeo');
-        INIT_LEYENDA = urlParams.get('l');
+        mapId: DEFAULT_MAP_ID,   
+        heading: DEFAULT_MAP_HEADING,
+        tilt: DEFAULT_MAP_TILT,
+      });
 
-        /* Valores de la Entidad */
-        let entidad = searchEntidad(CVEGEO);
-        if(entidad){
-          ENTIDAD = entidad.title;
-          LEYENDAS_INFO_PATH = '/data/' + CVEGEO + '/' + LEYENDAS_INFO_PATH;
-        
-          initLat = entidad.lat;
-          initLng = entidad.lng;
-          currentLat = entidad.lat;
-          currentLng = entidad.lng;
-
-          initZoom = entidad.zoom;
-          finalZoom = entidad.zoom;
-        }
-
-        
-        
-
-        /*--------------------------------------------*/
-        // init map
-        /*--------------------------------------------*/
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: new google.maps.LatLng(initLat,initLng),
-            restriction: gmap_restriction,
-
-            styles: mapStyle,
-            mapTypeId:gmap_mapTypeId,
-            backgroundColor:gmap_backgroundColor,
-
-            zoom: initZoom,
-            maxZoom: gmap_maxZoom,
-            minZoom: gmap_minZoom,
-
-            mapTypeControl: gmap_mapTypeControl,
-            fullscreenControl:gmap_fullscreenControl,
-            zoomControl:gmap_zoomControl,
-            streetViewControl:gmap_streetViewControl,
-
-        });
-
-        /*--------------------------------------------*/
-        //Try HTML5 geolocation.
-        /*--------------------------------------------*/
-        if (html5GeolocationEnabled && html5GeolocationInit && navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-
-			      currentLat = position.coords.latitude;
+      /*--------------------------------------------*/
+      //Try HTML5 geolocation.
+      /*--------------------------------------------*/
+      if (
+        html5GeolocationEnabled &&
+        html5GeolocationInit &&
+        navigator.geolocation
+      ) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            currentLat = position.coords.latitude;
             currentLng = position.coords.longitude;
 
-            var pos = {
+            let pos = {
               lat: position.coords.latitude,
-              lng: position.coords.longitude
+              lng: position.coords.longitude,
             };
 
             map.setCenter(pos);
             map.setZoom(geolocationZoom);
 
             //init marker
-
-
-          }, function() {
+          },
+          function () {
             handleLocationError(true, infowindow, map.getCenter());
+          }
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infowindow, map.getCenter());
+      }
+
+      /*--------------------------------------------*/
+      // Load Leyendas Info
+      /*--------------------------------------------*/
+      $.getJSON(LEYENDAS_INFO_PATH, function (data) {
+        leyendas = data;
+
+        /*--------------------------------------------*/
+        //Build paths fo animated symbols
+        /*--------------------------------------------*/
+        buildLeyendasPath();
+
+        //hay leyenda inicial??
+        if (INIT_LEYENDA) goToLeyenda(INIT_LEYENDA);
+      }).fail(function () {
+        console.log("An error has occurred on loading a JSON.");
+      });
+
+      /*--------------------------------------------*/
+      // DENUE
+      /*--------------------------------------------*/
+      cementerio.layer = new google.maps.Data({ map: map });
+      panteon.layer = new google.maps.Data({ map: map });
+      loadDENUEData();
+
+      /*--------------------------------------------*/
+      //custom styles
+      /*--------------------------------------------*/
+      cementerio.layer.setStyle({
+        icon: {
+          url: "img/map/graveyard.png",
+          scaledSize: new google.maps.Size(64, 64),
+        },
+      });
+
+      panteon.layer.setStyle({
+        icon: {
+          url: "img/map/graveyard.png",
+          scaledSize: new google.maps.Size(64, 64),
+        },
+      });
+
+      /*--------------------------------------------*/
+      // Traffic Layer
+      /*--------------------------------------------*/
+      trafficLayer.layer = new google.maps.TrafficLayer();
+      trafficLayer.status = false;
+      trafficLayer.loaded = true;
+      toggleLayer(
+        trafficLayer.layer,
+        trafficLayer.status,
+        "#uxmap_c_traffic_layer"
+      );
+
+      /*--------------------------------------------*/
+      //StreetMap change visibility event
+      /*--------------------------------------------*/
+      google.maps.event.addListener(
+        map.getStreetView(),
+        "visible_changed",
+        function () {
+          panorama = map.getStreetView();
+
+          //control de propiedades de StreetView
+          //panorama.setEnableCloseButton(false);
+          panorama.setOptions({
+            addressControlOptions: {
+              position: google.maps.ControlPosition.TOP_RIGHT,
+            },
+            linksControl: true /*nav arrows*/,
+            panControl: true /*compass*/,
+            enableCloseButton: true /*close button*/,
+            fullscreenControl: false,
           });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infowindow, map.getCenter());
+
+          if (this.getVisible() == true) {
+            $("#uxmap_c_exit_street_view_container").show();
+            $("#uxmap_c_geolocation").hide();
+            $("#lang-selector").hide();
+            $("#footer_dialog").hide();
+          } else {
+            $("#uxmap_c_exit_street_view_container").hide();
+            $("#uxmap_c_geolocation").show();
+            $("#lang-selector").show();
+            $("#footer_dialog").show();
+          }
         }
+      );
 
-        
+      //toggleLayer(layer_leyendas, status_leyendas, "#leyendas");
 
-        /*--------------------------------------------*/
-        // Load Leyendas Info
-        /*--------------------------------------------*/
-        $.getJSON(LEYENDAS_INFO_PATH, function(data){
-          leyendas = data;
+      /*--------------------------------------------*/
+      //Zoom to finalZoom animation
+      /*--------------------------------------------*/
+      setZoom(finalZoom, true);
 
-          /*--------------------------------------------*/
-          //Build paths fo animated symbols
-          /*--------------------------------------------*/
-          buildLeyendasPath();
+      //init Marker
 
-          //hay leyenda inicial??
-          if(INIT_LEYENDA)
-             goToLeyenda(INIT_LEYENDA);
+      /*--------------------------------------------*/
+      //Click Map Event
+      /*--------------------------------------------*/
+      google.maps.event.addListener(map, "click", (e) => {});
 
-        }).fail(function(){
-            console.log("An error has occurred on loading a JSON.");
-        });
+      /*--------------------------------------------*/
+      //Map Center Change Event
+      /*--------------------------------------------*/
+      google.maps.event.addListener(map, "center_changed", (e) => {
+        currentLat = map.getCenter().lat();
+        currentLng = map.getCenter().lng();
 
+        //calcula distancia
+        let pos1 = new google.maps.LatLng(lastDenueLat, lastDenueLng);
+        let pos2 = new google.maps.LatLng(currentLat, currentLng);
+        let d = getDistance_points(pos1, pos2);
 
-        
-        /*--------------------------------------------*/
-        // DENUE
-        /*--------------------------------------------*/
-        cementerio.layer = new google.maps.Data({map: map});
-        panteon.layer = new google.maps.Data({map: map});
-        loadDENUEData();
+        //console.log('Distancia: ' + d);
 
-        /*--------------------------------------------*/
-        //custom styles
-        /*--------------------------------------------*/
-        cementerio.layer.setStyle({
-          icon: {
-            url: 'img/map/cementerio.png',
-            scaledSize: new google.maps.Size(64, 64)
-          }
-        });
+        //if (d >= DENUE_DISTANCIA_RELOAD) loadDENUEData();
+      });
 
-        panteon.layer.setStyle({
-          icon: {
-            url: 'img/map/cementerio.png',
-            scaledSize: new google.maps.Size(64, 64)
-          }
-        });
+      /*--------------------------------------------*/
+      //Map Center Change Event
+      /*--------------------------------------------*/
+      google.maps.event.addListener(map, "center_changed", (e) => {
+        let newLat = map.getCenter().lat();
+        let newLng = map.getCenter().lng();
 
-        /*--------------------------------------------*/
-        // Traffic Layer
-        /*--------------------------------------------*/
-        trafficLayer.layer = new google.maps.TrafficLayer();
-        trafficLayer.status = false
-        trafficLayer.loaded = true;
-        toggleLayer(trafficLayer.layer, trafficLayer.status, '#uxmap_c_traffic_layer');
-        
-
-        /*--------------------------------------------*/
-        //StreetMap change visibility event
-        /*--------------------------------------------*/
-        google.maps.event.addListener(map.getStreetView(), 'visible_changed', function(){
-            panorama = map.getStreetView();
-
-            //control de propiedades de StreetView
-            //panorama.setEnableCloseButton(false);
-            panorama.setOptions({
-              addressControlOptions:{
-                position: google.maps.ControlPosition.TOP_RIGHT,
-              },
-              linksControl: true, /*nav arrows*/
-              panControl: true, /*compass*/
-              enableCloseButton: true, /*close button*/
-              fullscreenControl:false,
-            });
-
-            if(this.getVisible() == true) {
-                $('#uxmap_c_exit_street_view_container').show()
-                $('#uxmap_c_geolocation').hide();
-            } else {
-                $('#uxmap_c_exit_street_view_container').hide()
-                $('#uxmap_c_geolocation').show();
-            }
-        });
-
-        //toggleLayer(layer_leyendas, status_leyendas, "#leyendas");
-
-
-        /*--------------------------------------------*/
-        //Zoom to finalZoom animation
-        /*--------------------------------------------*/
-        setZoom(finalZoom, true);
-
-
-        //init Marker
-
-
-        /*--------------------------------------------*/
-        //Click Map Event
-        /*--------------------------------------------*/
-        google.maps.event.addListener(map, "click", (e) => {
-
-
-        });
-		
-		
-		    /*--------------------------------------------*/
-        //Zoom Map Event
-        /*--------------------------------------------*/
-        google.maps.event.addListener(map, "zoom_changed", (e) => {
-
-          
-          
-        });
-
-    }//data
+        currentLat = newLat;
+        currentLng = newLng;
+      });
+    } //data
   });
+} //initMap
 
-
-}//initMap
 
 /*define map style */
 function defineMapStyle(){
@@ -805,10 +981,11 @@ function defineMapStyle(){
   gmap_backgroundColor = (isDayTime)? gmap_backgroundColor_day : gmap_backgroundColor_night;
 
   if(isDayTime)
-    return 'map_style_day.json?v=2';
+    return 'map_style_day.json?v='+moment.now().toString();
 
-  return 'map_style_night.json?v=2';
+  return 'map_style_night.json?v='+moment.now().toString();
 }
+
 
 /*map mode ON*/
 function activateMap(mode){
@@ -838,267 +1015,265 @@ function activateMap(mode){
 }
 
 
-
 /*******************************
  show info dialog
 ********************************/
-function showTitle(jsonEvent, $layer){
-  if(mapModeON){
-		
-  }//mapModeOn
+function showTitle(jsonEvent, $layer) {
+  if (mapModeON) {
+    
+  } //mapModeOn
 }
 
-
-function hideTitle(){
-}
-  
-
-function showInfo(jsonEvent, $layer){
-  if(mapModeON){
-	/*var content = INFO_TEMPLATE.replace('{{NOMBRE}}',jsonEvent.feature.getProperty('Nombre'));
-      content = content.replace('{{IMAGE}}', 'img/'+$icon+'.png');
-      content = content.replace('{{CLASE_ACTIVIDAD}}',jsonEvent.feature.getProperty('Clase_actividad'));
-      content = content.replace('{{TIPO}}',jsonEvent.feature.getProperty('Tipo'));
-
-      if(infowindow)infowindow.close();//important
-
-      infowindow = new google.maps.InfoWindow({
-        content: content
-      })
-
-     infowindow.setPosition(jsonEvent.latLng);
-     infowindow.setOptions({
-      pixelOffset:jsonEvent.pixelOffset,
-      content: content
-     });
-    infowindow.open(map);*/
-
-  }//mapModeOn
+function hideTitle() {
+ 
 }
 
+function showInfo(jsonEvent, $layer) {
+  if (mapModeON) {
+    
+  } //mapModeOn
+}
+
+/*
 
 /*******************************
  Places
 ********************************/
-function goToPlace($id, $pan=false, $final=false){
-  var place = places[$id];
+function goToPlace($id, $pan = false, $final = false) {
+  let place = places[$id];
 
-  let a_zoom = ($final)?place.final_zoom:place.zoom;
+  let a_zoom = $final ? place.final_zoom : place.zoom;
   //zoom (si es pantalla chica el zoom disminuye un nivel)
-      a_zoom = (getBootstrapDeviceSize()=='xs' || getBootstrapDeviceSize()=='sm')? (a_zoom)-1 : a_zoom;
+  a_zoom =
+    getBootstrapDeviceSize() == "xs" || getBootstrapDeviceSize() == "sm"
+      ? a_zoom - 1
+      : a_zoom;
 
-  if(place){
-    if($pan)
-      panTo(place.lat, place.lng);
-    else
-      moveTo(place.lat, place.lng);
+  if (place) {
+    if ($pan) panTo(place.lat, place.lng);
+    else moveTo(place.lat, place.lng);
 
     setZoom(a_zoom, false);
   }
-}//goToPlace
-
-
+} //goToPlace
 
 /*******************************
  Markers
 ********************************/
-function buildMarker(id_, $draggable=false){
+function buildMarker(id_, $draggable = false) {
+  let marker_data = places[id_];
+  let $animation = $animation ? google.maps.Animation.BOUNCE : null;
 
-  var marker_data = places[id_];
-  var $animation = ($animation)?google.maps.Animation.BOUNCE:null;
-  
   a_icon = {
-        url:ICON_MAP_URL+marker_data.icon,
-        scaledSize: new google.maps.Size(40, 40),
-      }
-  
+    url: ICON_MAP_URL + marker_data.icon,
+    scaledSize: new google.maps.Size(40, 40),
+  };
 
-  if(marker_data){
-    var a_marker = new google.maps.Marker({
-      title:marker_data.title,
+  if (marker_data) {
+    let a_marker = new google.maps.Marker({
+      title: marker_data.title,
       position: { lat: marker_data.lat, lng: marker_data.lng },
       map,
       icon: a_icon,
-      draggable:$draggable,
-      animation: $animation,
-      /*optimized: false*/ /*important GIF*/
+      draggable: $draggable,
+      animation: $animation /*important GIF*/,
+      /*optimized: false*/
     });
-	
-	marker_data.marker = a_marker; //gmObject
-	
-	 a_marker.addListener('click', function(event) {
-	  showMarkerInfo(event,id_);
-   });
+
+    marker_data.marker = a_marker; //gmObject
+
+    a_marker.addListener("click", function (event) {
+      showMarkerInfo(event, id_);
+    });
   }
+} //buildMarker
 
-}//buildMarker
-
-
-function showMarkerInfo(jsonEvent, $id){
-  if(mapModeON){
+function showMarkerInfo(jsonEvent, $id) {
+  if (mapModeON) {
     let place = places[$id];
-    if(place){
-      let $img = 'img/'+ place.icon;
+    if (place) {
+      let $img = "img/" + place.icon;
       let $name = place.data.name;
       let $title = place.data.title;
       let $description = place.data.description;
-      
-      $('.modal_marker_img').attr('src',$img);
-      $('#modal_marker_name').html(($name)?$name:'');
-      $('#modal_marker_description').html(($description)?$description:'');
-      $('.modal_marker_title').html(($title)?$title:'');
-      $('#modal_marker').modal('show');
+
+      $(".modal_marker_img").attr("src", $img);
+      $("#modal_marker_name").html($name ? $name : "");
+      $("#modal_marker_description").html($description ? $description : "");
+      $(".modal_marker_title").html($title ? $title : "");
+      $("#modal_marker").modal("show");
 
       //si el zoom final es diferente va hacia el zoom
-      if(place.zoom != place.final_zoom)
-         goToPlace($id, true, true);
+      if (place.zoom != place.final_zoom) goToPlace($id, true, true);
     }
-    
-
-  }//showMarkerInfo
-} 
-
-
+  } //showMarkerInfo
+}
 
 /*******************************
 BLOCK/UNBLOCK
 ********************************/
-function blockPage(){
-  $('body').block({
-      message: '<i class="icon-spinner4 spinner" style="font-size:3em;"></i> <h6>BUSCANDO APARICIONES CERCANAS</h6>',
-      overlayCSS: {
-          backgroundColor: '#1B2024',
-          opacity: 0.85,
-          cursor: 'wait'
-      },
-      css: {
-          border: 0,
-          padding: 0,
-          backgroundColor: 'none',
-          color: '#fff'
-      }
+function blockPage() {
+  $("body").block({
+    message:
+      '<i class="icon-spinner4 spinner" style="font-size:3em;"></i> <h6>BUSCANDO APARICIONES CERCANAS</h6>',
+    overlayCSS: {
+      backgroundColor: "#1B2024",
+      opacity: 0.85,
+      cursor: "wait",
+    },
+    css: {
+      border: 0,
+      padding: 0,
+      backgroundColor: "none",
+      color: "#fff",
+    },
   });
 }
 
-function unblockPage(){
-  if(cementerio.loaded && panteon.loaded){
-
-
+function unblockPage() {
+  if (
+    true
+  ) {
     window.setTimeout(function () {
-        $('body').unblock();
-        cementerio.loaded = false;
-        panteon.loaded = false;
-    }, 2000);
+      $("body").unblock();
+      cementerio.loaded = false;
+      panteon.loaded = false;
+    }, 1000);
   }
 }
-
-
-
 
 /*******************************
 DENUE API
 ********************************/
-function denueAPI_buscar($layer, $condicion, $lat, $lng){
-
-  var denueURL = DENUE_API_BUSCAR_URL.replace(/{{CONDICION}}/g, $condicion);
-      denueURL = denueURL.replace(/{{COORDENADAS}}/g, ''+$lat+','+$lng);
-      denueURL = denueURL.replace(/{{DISTANCIA}}/g, DENUE_API_DISTANCIA);
-      denueURL = denueURL.replace(/{{TOKEN}}/g, DENUE_API_TOKEN);
-
-      //consulta DENUE
-      $.get( denueURL, function() {
-
-      }).done(function(data) {
-          //prepara GOEJSON con Datos de DENUE
-          $layer.src = jsonToGeoJSON(data, DENUE_API_LAT_ATTR, DENUE_API_LNG_ATTR, GEOMETRY_TYPE.POINT);
-
-          //load GEOJSON
-          $layer.layer.addGeoJson($layer.src);
-
-
-          console.log($layer.src);
-      }).fail(function(status, error) {
-        console.log(error)
-      }).always(function(){
-        //unblock
-        $layer.loaded = true;
-        unblockPage();
-      });
-}
-
-function loadDENUEData(){
-
+function loadDENUEData() {
   cementerio.loaded = false;
+  panteon.loaded = false;
 
-  blockPage();
+  //blockPage();
   denueAPI_buscar(cementerio, 'cementerio', currentLat, currentLng);
   denueAPI_buscar(panteon, 'panteon', currentLat, currentLng);
 }
 
-
 /*******************************
   VIEW HANDLERS
 ********************************/
-function hideCollapsibleFooterDialog(){
-  //esconde dialogo collapsible si es una pantalla chica
-  if(getBootstrapDeviceSize()=='xs' || getBootstrapDeviceSize()=='sm')
+function hideFooterDialog() {
+  //esconde dialogo footer si es una pantalla chica
+  if (getBootstrapDeviceSize() == "xs" || getBootstrapDeviceSize() == "sm")
     window.setTimeout(function () {
-      $('#collapsible_footer_dialog_collapse').click();
+      $("#footer_dialog_collapse").click();
     }, 2000);
 }
 function getBootstrapDeviceSize() {
-  return $('#users-device-size').find('div:visible').first().attr('id');
+  return $("#users-device-size").find("div:visible").first().attr("id");
 }
-
-
 
 /*******************************
-  MAP SIDEBAR
+  MAP SIDEBARS
 ********************************/
-function openMapSidebar() {
-  if(getBootstrapDeviceSize()=='xs'){
-    document.getElementById("mapSidebar").style.left = "0";
+function openLeftMapSidebar() {
+  if (getBootstrapDeviceSize() == "xs") {
+    document.getElementById("map-left-sidebar").style.left = "0";
     //document.getElementById("main").style.marginLeft = "100%";
-  }else{
-    document.getElementById("mapSidebar").style.left = "0";
+  } else {
+    document.getElementById("map-left-sidebar").style.left = "0";
     //document.getElementById("main").style.marginLeft = "460px";
   }
 
-  sidebarOpen = true;
+  mapLeftSidebarOpen = true;
 }
 
-function closeMapSidebar() {
-  if(getBootstrapDeviceSize()=='xs'){
-    document.getElementById("mapSidebar").style.left = "-100%";
+function closeLeftMapSidebar() {
+  if (getBootstrapDeviceSize() == "xs") {
+    document.getElementById("map-left-sidebar").style.left = "-100%";
     //document.getElementById("main").style.marginLeft = "100%";
-  }else{
-    document.getElementById("mapSidebar").style.left = "-50%";
+  } else {
+    document.getElementById("map-left-sidebar").style.left = "-50%";
     //document.getElementById("main").style.marginLeft = "460px";
   }
 
-  sidebarOpen = false;
+  mapLeftSidebarOpen = false;
 }
 
+function openRightMapSidebar() {
+  if (getBootstrapDeviceSize() == "xs") {
+    document.getElementById("map-right-sidebar").style.right = "0";
+    //document.getElementById("main").style.marginLeft = "100%";
+  } else {
+    document.getElementById("map-right-sidebar").style.right = "0";
+    //document.getElementById("main").style.marginLeft = "460px";
+  }
 
+  mapRightSidebarOpen = true;
+}
+
+function closeRightMapSidebar() {
+  if (getBootstrapDeviceSize() == "xs") {
+    document.getElementById("map-right-sidebar").style.right = "-100%";
+    //document.getElementById("main").style.marginLeft = "100%";
+  } else {
+    document.getElementById("map-right-sidebar").style.right = "-50%";
+    //document.getElementById("main").style.marginLeft = "460px";
+  }
+
+  mapRightSidebarOpen = false;
+}
 
 /*******************************
   FILTER
 ********************************/
-function doFilter(){
+function doFilter() {
+  //restart
+  destroyGeoJSONLayer(example);
+  initGeoJSONLayer(example, function () {
+    //style
+    example.layer.setStyle(function (feature) {
+      let tipo = feature.getProperty("tipo_penal");
+      let image_icon = tipo == "1" ? "1.png" : "2.png";
+      return {
+        icon: {
+          url: ICON_MAP_URL + image_icon,
+          scaledSize: new google.maps.Size(32, 32),
+        },
+      };
+    });
 
-  
+    //listener
+    example.layer.addListener("click", function (event) {
+      showInfo(event, "");
+    });
 
+    let $layer = example.layer;
+
+    $total_count = 0;
+    $filter_count = 0;
+
+    $layer.forEach(function (d) {
+      $total_count++;
+      //console.log(d);
+
+      //si no cumple remueve el feature
+      if (!matchFilters(d)) {
+        $layer.remove(d);
+      } else {
+        $filter_count++;
+      }
+    });
+
+    //update filter
+    $("#filter_count").html($filter_count);
+    $("#total_count").html($total_count);
+  });
 }
 
 /*Valida si cumple filtros*/
-function matchFilters($feature){
-
+function matchFilters($feature) {
   let $a_in = true;
   let $b_in = true;
-  let $c_in  = true;
+  let $c_in = true;
   let $d_in = true;
 
-  return ($a_in && $b_in && $c_in && $d_in );
+  return $a_in && $b_in && $c_in && $d_in;
 }
 
 
@@ -1110,7 +1285,7 @@ LEYENDAS
 construye un path de recorrido de cada leyenda 
 */
 function buildLeyendasPath(){
-  for(var i in leyendas){
+  for(let i in leyendas){
 
     leyenda = leyendas[i];
     leyendasPointArray[leyenda.clave] = []
@@ -1125,36 +1300,38 @@ function buildLeyendasPath(){
 */
 function animateRoute($data, $line_id){
 
-  GHOST_ANCHOR = new google.maps.Point(350,350);
+  GHOST_ANCHOR = new google.maps.Point(250,350);
+  GHOST_ORIGIN = new google.maps.Point(0,0);
 
-  var GHOST_BASE_STROKE_COLOR = '#444';
-  var ghost_symbol_1 = {labelOrigin:(-100,-200), path: GHOST_SVG_1,fillOpacity: 1,strokeOpacity: 1 ,strokeWeight: 1,fillColor: GHOST_COLOR_0,strokeColor: GHOST_BASE_STROKE_COLOR,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_2 = {path: GHOST_SVG_2,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_1,strokeColor: GHOST_COLOR_1,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_3 = {path: GHOST_SVG_3,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_2,strokeColor: GHOST_COLOR_2,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_4 = {path: GHOST_SVG_4,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_3,strokeColor: GHOST_COLOR_3,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_5 = {path: GHOST_SVG_5,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_3,strokeColor: GHOST_COLOR_3,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  let GHOST_BASE_STROKE_COLOR = '#444';
+  let ghost_symbol_1 = {labelOrigin:(-500,-200), path: GHOST_SVG_1,fillOpacity: 1,strokeOpacity: 1 ,strokeWeight: 1,fillColor: GHOST_COLOR_1,strokeColor: GHOST_BASE_STROKE_COLOR,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION, origin:GHOST_ORIGIN};
+  let ghost_symbol_2 = {path: GHOST_SVG_2,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_2,strokeColor: GHOST_COLOR_2,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION, origin:GHOST_ORIGIN};
+  let ghost_symbol_3 = {path: GHOST_SVG_3,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_3,strokeColor: GHOST_COLOR_3,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION, origin:GHOST_ORIGIN};
+  let ghost_symbol_4 = {path: GHOST_SVG_4,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_4,strokeColor: GHOST_COLOR_4,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION, origin:GHOST_ORIGIN};
+  let ghost_symbol_5 = {path: GHOST_SVG_5,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_5,strokeColor: GHOST_COLOR_5,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION, origin:GHOST_ORIGIN};
 
-  var ghost_symbol_6 = {path: GHOST_SVG_6,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_4,strokeColor: GHOST_COLOR_4,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_7 = {path: GHOST_SVG_7,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_5,strokeColor: GHOST_COLOR_5,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_8 = {path: GHOST_SVG_8,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_6,strokeColor: GHOST_COLOR_6,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_9 = {path: GHOST_SVG_9,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_1,strokeColor: GHOST_COLOR_1,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_10 = {path: GHOST_SVG_10,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_7,strokeColor: GHOST_COLOR_7,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  let ghost_symbol_6 = {path: GHOST_SVG_6,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_6,strokeColor: GHOST_COLOR_6,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION, origin:GHOST_ORIGIN};
+  let ghost_symbol_7 = {path: GHOST_SVG_7,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_7,strokeColor: GHOST_COLOR_7,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION, origin:GHOST_ORIGIN};
+  let ghost_symbol_8 = {path: GHOST_SVG_8,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_8,strokeColor: GHOST_COLOR_8,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION, origin:GHOST_ORIGIN};
+  // let ghost_symbol_9 = {path: GHOST_SVG_9,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_9,strokeColor: GHOST_COLOR_9,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  // let ghost_symbol_10 = {path: GHOST_SVG_10,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_10,strokeColor: GHOST_COLOR_10,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
 
-  var ghost_symbol_11 = {path: GHOST_SVG_11,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_6,strokeColor: GHOST_COLOR_6,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_12 = {path: GHOST_SVG_12,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_1,strokeColor: GHOST_COLOR_1,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_13 = {path: GHOST_SVG_13,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_7,strokeColor: GHOST_COLOR_7,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_14 = {path: GHOST_SVG_14,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_8,strokeColor: GHOST_COLOR_8,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
-  var ghost_symbol_15 = {path: GHOST_SVG_15,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_5,strokeColor: GHOST_COLOR_5,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  // let ghost_symbol_11 = {path: GHOST_SVG_11,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_11,strokeColor: GHOST_COLOR_11,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  // let ghost_symbol_12 = {path: GHOST_SVG_12,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_12,strokeColor: GHOST_COLOR_12,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  // let ghost_symbol_13 = {path: GHOST_SVG_13,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_13,strokeColor: GHOST_COLOR_13,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  // let ghost_symbol_14 = {path: GHOST_SVG_14,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_14,strokeColor: GHOST_COLOR_14,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  // let ghost_symbol_15 = {path: GHOST_SVG_15,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_15,strokeColor: GHOST_COLOR_15,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
+  // let ghost_symbol_16 = {path: GHOST_SVG_16,fillOpacity: 1,strokeOpacity: 0.0,strokeWeight: 3,fillColor: GHOST_COLOR_16,strokeColor: GHOST_COLOR_16,scale: GHOST_SCALE, anchor: GHOST_ANCHOR,rotation:GHOST_ROTATION};
 
 
-  var path = [];
-  for(var p in $data){
-    var point = new google.maps.LatLng($data[p][1], $data[p][0]); //important lat lng
+  let path = [];
+  for(let p in $data){
+    let point = new google.maps.LatLng($data[p][1], $data[p][0]); //important lat lng
     path.push(point);
   }
 
   // Create the polyline and add the symbol to it via the 'icons' property.
-  var animatedLine = new google.maps.Polyline({
+  let animatedLine = new google.maps.Polyline({
     path: path,
     icons: [
       {icon: ghost_symbol_1,offset: "0%"},
@@ -1165,17 +1342,18 @@ function animateRoute($data, $line_id){
       {icon: ghost_symbol_6,offset: "0%"},
       {icon: ghost_symbol_7,offset: "0%"},
       {icon: ghost_symbol_8,offset: "0%"},
-      {icon: ghost_symbol_9,offset: "0%"},
-      {icon: ghost_symbol_10,offset: "0%"},
-      {icon: ghost_symbol_11,offset: "0%"},
-      {icon: ghost_symbol_12,offset: "0%"},
-      {icon: ghost_symbol_13,offset: "0%"},
-      {icon: ghost_symbol_14,offset: "0%"},
-      {icon: ghost_symbol_15,offset: "0%"},
+      // {icon: ghost_symbol_9,offset: "0%"},
+      // {icon: ghost_symbol_10,offset: "0%"},
+      // {icon: ghost_symbol_11,offset: "0%"},
+      // {icon: ghost_symbol_12,offset: "0%"},
+      // {icon: ghost_symbol_13,offset: "0%"},
+      // {icon: ghost_symbol_14,offset: "0%"},
+      // {icon: ghost_symbol_15,offset: "0%"},
+      // {icon: ghost_symbol_16,offset: "0%"},
 
     ],
     strokeColor: 'white',
-    strokeWeight: 10, /*easier click*/
+    strokeWeight: 12, /*easier click*/
     strokeOpacity: 0.0,/*invisible line*/
     map: map,
   });
@@ -1204,8 +1382,8 @@ function setLabelForRoute(path, $id) {
   if(leyenda){
     let $title = (leyenda.titulo)?leyenda.titulo:'';
     //let position = google.maps.geometry.spherical.interpolate(path[0], path[path.length-1],(1/20));
-    //var position = google.maps.geometry.spherical.interpolate(path[0], path[1],(1/20));
-    //var position = (path[0]);
+    //let position = google.maps.geometry.spherical.interpolate(path[0], path[1],(1/20));
+    //let position = (path[0]);
     let position = new google.maps.LatLng(leyenda.latitud, leyenda.longitud);
 
     let $icon;
@@ -1222,7 +1400,7 @@ function setLabelForRoute(path, $id) {
       }
     }
 
-    var marker = new MarkerWithLabel({
+    let marker = new MarkerWithLabel({
       position: position,
       draggable: false,
       raiseOnDrag: false,
@@ -1238,10 +1416,10 @@ function setLabelForRoute(path, $id) {
       labelContent: $title,
       labelAnchor: new google.maps.Point(100, 0),
       labelClass: "legend_name_label", // the CSS class for the label
-      labelStyle: {opacity: 0.66}
+      labelStyle: {opacity: 0.75}
     });
 
-    /*var marker1 = google.maps.Marker({
+    /*let marker1 = google.maps.Marker({
       position: position,
       draggable: false,
       map: map,
@@ -1256,7 +1434,8 @@ function setLabelForRoute(path, $id) {
 
 
 /*
-inicia el recorrido 
+// Use the DOM setInterval() function to change the offset of the symbol
+// at fixed intervals.
 */
 function animateRouteStart($line) {
   let count = 0;
@@ -1264,7 +1443,7 @@ function animateRouteStart($line) {
     count = (count + 1) % 200;
 
     const icons = $line.get("icons");
-    for(var i in icons){
+    for(let i in icons){
       icons[i].offset = count / 2 + "%";
     }
 
@@ -1320,6 +1499,14 @@ function showLeyendaInfo($id){
         soundEnabled = false;
         enableAudio(true);
       }
+      if(leyenda.instagram_reel_id){
+        leyenda_multimedia = REEL_TEMPLATE.replace(/{{REEL_ID}}/g, leyenda.instagram_reel_id);
+        
+        //pause audio
+        leyenda_has_media = soundEnabled; //with media + tenia audio antes de abrir
+        soundEnabled = false;
+        enableAudio(true);
+      }
       if(leyenda.multimedia_tiktok_id){
         let $tiktok_id = leyenda.multimedia_tiktok_id.replace('t_',''); //Important for csv not consider a big number
         leyenda_multimedia = TIKTOK_TEMPLATE.replace(/{{TIKTOK_ID}}/g, $tiktok_id).replace(/{{TIKTOK_USER}}/g, leyenda.multimedia_tiktok_user);
@@ -1361,7 +1548,7 @@ function showLeyendaInfo($id){
       $('.modal_map_leyenda_share').attr('href', $id);
 
       //restart scroll
-      var myDiv = document.getElementById('modal_map_leyenda_text');
+      let myDiv = document.getElementById('modal_map_leyenda_text');
       myDiv.scrollTop = 0;
       $('body, html, #modal_map_leyenda_text').scrollTop(0);
 
@@ -1420,7 +1607,7 @@ $('#modal_map_leyenda').on('hide.bs.modal', function () {
 Busca una leyenda 
 */
 function searchLeyenda($id){
-  for(var i in leyendas){
+  for(let i in leyendas){
     if(leyendas[i].clave == $id)
        return leyendas[i];
   }
@@ -1434,7 +1621,7 @@ Determina cual leyenda es la anterior y siguiente
 function searchPrevNextLeyenda($id){
   let prev_next = [];
 
-  for(var i in leyendas){
+  for(let i in leyendas){
     leyenda = leyendas[i];
 
     if(leyenda.clave == $id){
@@ -1482,7 +1669,7 @@ function goToLeyenda($id){
 
      //activate map (always with this)
      if(!mapModeON){
-       setMapStyle('map_style_night.json');
+       setMapStyle('map_style_night.json?v='+moment.now().toString());
        mapModeON = true;
        activateMap(mapModeON);
      }
