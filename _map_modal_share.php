@@ -3,18 +3,20 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="btn border-grey-800 btn-flat btn-icon btn-rounded modal-close" data-dismiss="modal">
+          
+          <h5 class="modal-title">
+            <a href="https://uxmalsoft.com/uxsmap" target="_blank"><img class="uxsmap-logo-modal" src="img/uxsmap.png?v=<?php include '_latest_revision.php';?>" alt="UXSMAP"></a>
+          </h5>
+          <button type="button" class="btn border-dark btn-icon rounded-pill modal-close" data-dismiss="modal">
             <i class="icon-cross2"></i>
           </button>
-          <h5 class="modal-title">
-            <a href="https://www.uxmalsoft.com/uxsmap" target="_blank"><img class="uxsmap-logo-modal" src="img/uxsmap.png" alt="UXSMAP"></a>
-          </h5>
+
         </div>
 
         <div class="modal-body">
           <div class="row">
               <div class="col-md-12">
-                <h4><a class="btn btn-default btn-rounded legitRipple"><i class="icon-share3"></i></a> Comparte este <b>mapa</b>
+                <h4><a class="btn btn-default btn-rounded legitRipple"><i class="icon-share3"></i></a> <?php echo $lang['DIALOG_SHARE_TITLE']; ?>
 
                 </h4>
               </div>
@@ -22,7 +24,7 @@
           <div class="row">
               <div class="col-md-12 text-center">
                   <!-- AddToAny BEGIN -->
-                  <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://diademuertos.uxmalsoft.com/" data-a2a-title="UXMALSOFT">
+                  <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://mapadeleyendas.com/" data-a2a-title="UXSMAP">
                   <a class="a2a_button_facebook"></a>
                   <a class="a2a_button_facebook_messenger"></a>
                   <a class="a2a_button_whatsapp"></a>
@@ -47,7 +49,7 @@
           <div class="row">
             <div class="col-md-12">
               <h5>
-                Consulta nuestras redes sociales📱 para que puedas conocer los nuevos proyectos, productos y mapas🗺️ y nos sirve mucho que nos des un like👍o nos sigas para llegar  a más personas. ¡Gracias!
+                <?php echo $lang['DIALOG_SHARE_DESCRIPTION_1']; ?>
               </h5>
             </div>
               <div class="col-md-6 col-sm-12">
@@ -60,7 +62,7 @@
                 </div>
 
                 <br/>&nbsp;
-                  <img class="" src="img/uxmalsoft.png" alt="UXMALSOFT" style="height:33px" />
+                  <img class="" src="img/uxmalsoft.png?v=<?php include '_latest_revision.php';?>" alt="UXMALSOFT" style="height:33px" />
                 <br/>&nbsp;
 
               </div>
@@ -73,7 +75,7 @@
                   <a class="a2a_button_twitter" href="https://twitter.com/AgenciaMidnight"></a>
                 </div>
                 <br/>&nbsp;
-                <img class="" src="img/midnight_strike_light.png" alt="Midnight Strike" style="height:46px" />
+                <img class="" src="img/midnight_strike_light.png?v=<?php include '_latest_revision.php';?>" alt="Midnight Strike" style="height:46px" />
                 <br/>&nbsp;
               </div>
 
@@ -90,9 +92,10 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-link" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn bg-blue bg-map-primary-color" data-dismiss="modal">Aceptar</button>
+            <button type="button" class="btn btn-link text-<?php include '_template_base_color.php';?>" data-dismiss="modal"><?php echo $lang['BTN_CANCEL']; ?></button>
+            <button type="button" class="btn btn-<?php include '_template_base_color.php';?> bg-map-primary-color" data-dismiss="modal"><?php echo $lang['BTN_OK']; ?></button>
         </div>
+
       </div>
     </div>
   </div>
