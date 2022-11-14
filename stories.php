@@ -133,12 +133,13 @@
     <script type="text/javascript" src="js/uxsmap.js?v=<?php include '_latest_version.php';?>"></script>
 
 	<script type="text/javascript" src="js/denue.js?v=<?php include '_latest_version.php';?>"></script>
+	<script type="text/javascript" src="js/places.js?v=<?php include '_latest_version.php';?>"></script>
     <script type="text/javascript" src="js/project.js?v=<?php include '_latest_version.php';?>"></script>
     
 
     <!-- Google Maps -->
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeUNoCns_PJw6uTLdTvM3xJX2bKZ8Gwao&callback=initMap&libraries=geometry">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeUNoCns_PJw6uTLdTvM3xJX2bKZ8Gwao&callback=initMap&libraries=geometry,places">
     </script>
 
     <!--v3-utility-library--> 

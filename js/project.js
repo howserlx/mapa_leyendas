@@ -66,6 +66,8 @@ const DEFAULT_MAP_HEADING = 0;
 const DEFAULT_MAP_TILT = 40;
 const DEFAULT_MAP_ID = '3003f95cd67dcdff';
 
+const GRAVEYARD_QUERY = 'cementerio municipal';
+
 //LAYERS
 //-----------------------------------------------------------------
 let layers = [];
@@ -856,6 +858,9 @@ function initMap() {
       panteon.layer = new google.maps.Data({ map: map });
       loadDENUEData();
 
+      //ask for graveyards
+      loadGraveyards();
+
       /*--------------------------------------------*/
       //custom styles
       /*--------------------------------------------*/
@@ -946,9 +951,6 @@ function initMap() {
         let pos2 = new google.maps.LatLng(currentLat, currentLng);
         let d = getDistance_points(pos1, pos2);
 
-        //console.log('Distancia: ' + d);
-
-        //if (d >= DENUE_DISTANCIA_RELOAD) loadDENUEData();
       });
 
       /*--------------------------------------------*/
@@ -1678,4 +1680,42 @@ function goToLeyenda($id){
      //dialogo
      showLeyendaInfo($id);
   }
+}
+
+
+/*******************************
+ google places request
+********************************/
+function loadGraveyards(){
+    //search for graveyards
+    searchPlaces(GRAVEYARD_QUERY, null, function(p){
+      
+      
+      createGraveyardMarker(p);
+
+    });
+}
+
+/**
+ * Create a merker for graveyards
+ */
+function createGraveyardMarker(place) {
+  if (!place.geometry || !place.geometry.location) return;
+
+  let a_icon = {
+    url: ICON_MAP_URL + 'graveyard.png',
+    scaledSize: new google.maps.Size(70, 70),
+  };
+
+  let a_marker = new google.maps.Marker({
+    title: GRAVEYARD_QUERY,
+    position: place.geometry.location,
+    map,
+    icon: a_icon,
+    draggable: false,
+    animation: google.maps.Animation.BOUNCE 
+  });
+
+  console.log(place);
+
 }
